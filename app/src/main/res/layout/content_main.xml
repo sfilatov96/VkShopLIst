@@ -8,14 +8,18 @@
     android:paddingRight="5dp"
     android:paddingTop="10dp"
     tools:context="com.vkshoplist.sfilatov96.vkshoplist.MainActivity">
-
-
-    <android.support.v7.widget.RecyclerView
+    <FrameLayout
+        android:id="@+id/friends_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:id="@+id/rv"
         />
+    <FrameLayout
+        android:id="@+id/login_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
 
 
 </RelativeLayout>

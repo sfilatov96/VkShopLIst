@@ -4,23 +4,24 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,18 +34,8 @@ import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApi;
-import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
-import com.vk.sdk.api.VKParameters;
-import com.vk.sdk.api.VKRequest;
-import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.api.methods.VKApiUsers;
-import com.vk.sdk.api.model.VKApiApplicationContent;
-import com.vk.sdk.api.model.VKApiOwner;
-import com.vk.sdk.api.model.VKApiUser;
-import com.vk.sdk.api.model.VKApiUserFull;
-import com.vk.sdk.api.model.VKList;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,13 +45,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private RecyclerView recyclerView;
-    RVAdapter adapter;
+
+    private SearchView mSearchView;
+    String mSearchString;
+
     Tracker mTracker;
-    private ArrayList<Person> persons;
-    public final String ONLINE="online";
-    public final String OFFLINE="offline";
+    LoginFragment loginFragment = new LoginFragment();
+    FriendsFragment friendsFragment = new FriendsFragment();
+
+
     public final String VKUSERID="VkUserId";
+    public final String SEARCH_KEY="SEARCH_KEY";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,46 +64,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Log.d("oncreate","ocreate");
-        if ( VKSdk.isLoggedIn()) {
-
-            findFriends();
-            getProfileInNavHeader();
-        } else {
-            VKSdk.login(MainActivity.this, VKScope.MESSAGES, VKScope.FRIENDS, VKScope.WALL);
-
-        }
-        recyclerView = (RecyclerView)findViewById(R.id.rv);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(MainActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        Person person = adapter.getIdByPosition(position);
-                        Intent intent = new Intent(MainActivity.this, CreateListActivty.class);
-                        String id = String.valueOf(person.id);
-                        intent.putExtra("id",id);
-                        intent.putExtra("name",person.name);
-                        intent.putExtra("avatar",person.avater);
-                        startActivity(intent);
-                    }
-                })
-        );
 
 
-        Log.d("tag","oncreate");
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTracker.send(new HitBuilders.EventBuilder().setCategory("main_content_activity").setAction("fab_clicked").build());
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                FlurryAgent.logEvent("fab_clicked");
-                recyclerView.smoothScrollToPosition(0);
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -120,8 +78,57 @@ public class MainActivity extends AppCompatActivity
         VkApplication application = (VkApplication) getApplication();
         mTracker = application.getDefaultTracker();
 
+        if (savedInstanceState != null) {
+            mSearchString = savedInstanceState.getString(SEARCH_KEY);
+        }
 
 
+        if ( VKSdk.isLoggedIn()) {
+
+            showFriendsFragment();
+            getProfileFromVk();
+
+
+        } else {
+            showLoginFragment();
+
+        }
+
+
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mSearchString = mSearchView.getQuery().toString();
+        outState.putString(SEARCH_KEY, mSearchString);
+    }
+
+
+    private void showLoginFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.login_fragment, loginFragment)
+                .commit();
+
+    }
+    private void hideLoginFragment(){
+
+        getSupportFragmentManager().beginTransaction()
+                .remove(loginFragment)
+                .commit();
+    }
+    private void showFriendsFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.friends_fragment, friendsFragment)
+                .commit();
+    }
+
+    private void hideFriendsFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .remove(friendsFragment)
+                .commit();
     }
 
     @Override
@@ -143,30 +150,42 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        /*MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         if(null!=searchManager ) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        }*/
+
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+
+        //focus the SearchView
+        if(mSearchString != null && !mSearchString.isEmpty()){
+            searchMenuItem.expandActionView();
+            mSearchView.setQuery(mSearchString, true);
+            mSearchView.clearFocus();
         }
-        searchView.setIconifiedByDefault(false);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //Toast.makeText(getApplicationContext(),query, Toast.LENGTH_SHORT).show();
-                return false;
+                friendsFragment.adapter.filter(query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.filter(newText);
-                return false;
+                friendsFragment.adapter.filter(newText);
+                return true;
             }
         });
-        //searchView.setQuery("lal",true);
-        return true;
+
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -200,9 +219,15 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_about) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_logout) {
+            if(VKSdk.isLoggedIn()){
+                VKSdk.logout();
+                hideFriendsFragment();
+                showLoginFragment();
+
+            }
 
         }
 
@@ -211,144 +236,24 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
-            @Override
-            public void onResult(VKAccessToken res) {
-                findFriends();
-                getProfileInNavHeader();
-                Toast.makeText(getApplicationContext(), R.string.auth_success, Toast.LENGTH_SHORT).show();
 
+
+    private void getProfileFromVk(){
+        VkHelper vkHelper = new VkHelper(this);
+        vkHelper.getProfileInNavHeader();
+        vkHelper.setListener(new VkHelper.Listener() {
+            @Override
+            public void onAppearUserProfile(JSONObject jsonObject) {
+                fillNavHeaderViews(jsonObject);
             }
 
             @Override
-            public void onError(VKError error) {
-                Toast.makeText(getApplicationContext(), R.string.auth_error, Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        })) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+            public void onAppearFriends(ArrayList<Person> persons) {
 
-    }
-    private void findFriends() {
-        final VKRequest request = VKApi.friends().get(VKParameters.from(VKApiConst.FIELDS, "photo_200,order"));
-
-        request.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(VKResponse response) {
-                super.onComplete(response);
-                parseUser(response);
-
-            }
-
-            @Override
-            public void onError(VKError error) {
-                Toast.makeText(getApplicationContext(), "oshibka", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
-
-            }
-        });
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //mTracker.setScreenName("Image~" + "VkShopList");
-        //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
-    }
-
-    private void parseUser(VKResponse response){
-        VKList<VKApiUser> users  = ((VKList<VKApiUser>) response.parsedModel);
-        persons = new ArrayList<>();
-        for(VKApiUser u: users){
-            if(u.online){
-                persons.add(new Person(u.toString(), ONLINE, u.photo_200, u.id));
-            } else {
-                persons.add(new Person(u.toString(),  OFFLINE, u.photo_200, u.id));
-            }
-
-        }
-        adapter = new RVAdapter(this, persons);
-        recyclerView.setAdapter(adapter);
-
-    }
-    private void getProfileInNavHeader() {
-        Log.d("profile","voshel");
-
-        final VKRequest requestProfile = new VKRequest("account.getProfileInfo", VKParameters.from(VKApiConst.FIELDS, "first_name,last_name,email"));
-        requestProfile.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(VKResponse response) {
-
-                super.onComplete(response);
-                JSONObject jsonObject = response.json;
-                String screen_name = null;
-
-                try {
-                    screen_name = jsonObject.getJSONObject("response").getString("screen_name");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if(screen_name != null)
-                    getProfileById(screen_name);
-
-
-                //fillNavHeaderViews(userProfile);
-            }
-
-            @Override
-            public void onError(VKError error) {
-                super.onError(error);
-                Log.d("profile", error.toString());
             }
         });
     }
 
-
-
-    private void getProfileById(String screen_name){
-        final VKRequest request = new VKRequest("users.get", VKParameters.from(VKApiConst.USER_IDS, String.format("%s",screen_name),
-                VKApiConst.FIELDS, "photo_200,screen_name"));
-        request.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(VKResponse response) {
-                super.onComplete(response);
-                goAway(response);
-
-            }
-
-            @Override
-            public void onError(VKError error) {
-                Toast.makeText(getApplicationContext(), "oshibka", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
-
-            }
-        });
-
-    }
-
-
-
-    private void goAway(VKResponse response) {
-        try {
-            JSONObject r = response.json.getJSONArray("response").getJSONObject(0);
-            // Здесь обрабатываем полученный response.
-           fillNavHeaderViews(r);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
     public void fillNavHeaderViews(JSONObject userProfile) {
         TextView profile_name = (TextView) findViewById(R.id.profile_name);
         TextView profile_email = (TextView) findViewById(R.id.profile_email);
@@ -357,11 +262,37 @@ public class MainActivity extends AppCompatActivity
         try {
             profile_name.setText(userProfile.getString("first_name") + " " + userProfile.getString("last_name"));
             profile_email.setText(userProfile.getString("screen_name"));
-            Picasso.with(this).load(userProfile.getString("photo_200")).transform(new CircularTransformation(200)).placeholder(R.drawable.user_placeholder).into(profile_photo);
+            Picasso.with(this).load(userProfile.getString("photo_200")).transform(new CircularTransformation(100)).placeholder(R.drawable.user_placeholder).into(profile_photo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         //}
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+
+                Toast.makeText(MainActivity.this, R.string.auth_success, Toast.LENGTH_LONG).show();
+                hideLoginFragment();
+                showFriendsFragment();
+                getProfileFromVk();
+
+
+
+            }
+
+            @Override
+            public void onError(VKError error) {
+                Toast.makeText(MainActivity.this, R.string.auth_error, Toast.LENGTH_LONG).show();
+                MainActivity.this.finish();
+            }
+        })) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
 
     }
 

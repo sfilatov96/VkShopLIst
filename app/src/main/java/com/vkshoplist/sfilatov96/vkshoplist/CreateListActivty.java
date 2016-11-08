@@ -206,6 +206,7 @@ public class CreateListActivty extends AppCompatActivity {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
+            Log.d("dada","remove item in " + ShopList.get(position).listTitle + " ShopList: { name: " + ShopList.get(position).name + "}" );
 
 
             List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class, "name = ? and list_title = ?", ShopList.get(position).name, ShopList.get(position).listTitle);
@@ -213,6 +214,7 @@ public class CreateListActivty extends AppCompatActivity {
                 item.get(0).delete();
             }
             ShopList.remove(position);
+
             adapter.notifyDataSetChanged();
         }
     };
@@ -221,7 +223,6 @@ public class CreateListActivty extends AppCompatActivity {
         if(ShopList.isEmpty()){
             Snackbar.make(view,R.string.list_empty,Snackbar.LENGTH_LONG).show();
         } else {
-            String message = VK_MESSAGE_IDENTIFIER + "[\n";
             ArrayList<JSONObject> jsonlist = new ArrayList<>();
             for(ShopListItem s:ShopList){
                 JSONObject jsonObject = new JSONObject();

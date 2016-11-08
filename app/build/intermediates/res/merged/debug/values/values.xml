@@ -436,6 +436,7 @@
     <string name="inbox_lists">Входящие Списки</string>
     <string name="internet_access_error">Ошибка подключения к интернет, пожалуйста, попробуйте ещё раз отправить</string>
     <string name="list_empty">Список пуст, отправлять нечего!</string>
+    <string name="login_through_vk">Войти через Vk</string>
     <string name="logout">Выйти</string>
     <string name="my_friends">Мои Друзья</string>
     <string name="my_friends_online">Онлайн</string>
