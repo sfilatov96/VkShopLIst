@@ -3,6 +3,7 @@ package com.vkshoplist.sfilatov96.vkshoplist;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity
             getProfileFromVk();
 
 
+
         } else {
             showLoginFragment();
 
@@ -106,6 +108,13 @@ public class MainActivity extends AppCompatActivity
         outState.putString(SEARCH_KEY, mSearchString);
     }
 
+    private void runService(String key, String server, String ts){
+        Intent intent = new Intent(this,VkMessangerService.class);
+        intent.putExtra("KEY",key);
+        intent.putExtra("SERVER",server);
+        intent.putExtra("TS",ts);
+        startService(intent);
+    }
 
     private void showLoginFragment(){
         getSupportFragmentManager().beginTransaction()
@@ -168,8 +177,9 @@ public class MainActivity extends AppCompatActivity
         if(mSearchString != null && !mSearchString.isEmpty()){
             searchMenuItem.expandActionView();
             mSearchView.setQuery(mSearchString, true);
-            mSearchView.clearFocus();
+
         }
+
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -252,6 +262,13 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        vkHelper.getLongPolling();
+        vkHelper.setLongPollListener(new VkHelper.LongPollListener() {
+            @Override
+            public void onGetLongPoll(String key, String server, String ts) {
+                runService(key,server,ts);
+            }
+        });
     }
 
     public void fillNavHeaderViews(JSONObject userProfile) {
@@ -301,4 +318,6 @@ public class MainActivity extends AppCompatActivity
         super.onStop();
         FlurryAgent.onEndSession(this);
     }
+
+
 }

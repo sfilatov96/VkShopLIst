@@ -27,6 +27,7 @@ public class VkHelper {
     public final String ONLINE="online";
     public final String OFFLINE="offline";
     public Listener listener;
+    public LongPollListener longPollListener;
 
     VkHelper(Context context){
         this.context = context;
@@ -106,7 +107,7 @@ public class VkHelper {
         });
     }
 
-    private void getProfileById(String screen_name){
+    public void getProfileById(String screen_name){
         final VKRequest request = new VKRequest("users.get", VKParameters.from(VKApiConst.USER_IDS, String.format("%s",screen_name),
                 VKApiConst.FIELDS, "photo_200,screen_name"));
         request.executeWithListener(new VKRequest.VKRequestListener() {
@@ -139,11 +140,47 @@ public class VkHelper {
             e.printStackTrace();
         }
     }
+    public void  getLongPolling(){
+        final VKRequest requestProfile = new VKRequest("messages.getLongPollServer", VKParameters.from());
+        requestProfile.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
 
+                super.onComplete(response);
+                JSONObject jsonObject = response.json;
+                String key = null;
+                String server = null;
+                String ts = null;
+
+                try {
+                    key = jsonObject.getJSONObject("response").getString("key");
+                    server = jsonObject.getJSONObject("response").getString("server");
+                    ts = jsonObject.getJSONObject("response").getString("ts");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(key != null)
+                longPollListener.onGetLongPoll(key, server, ts);
+
+
+            }
+
+        });
+    }
 
     public interface Listener{
         void onAppearFriends(ArrayList<Person> persons);
         void onAppearUserProfile(JSONObject jsonObject);
+    }
+
+    public void setLongPollListener(LongPollListener longPollListener){
+        this.longPollListener = longPollListener;
+
+    }
+
+    public interface LongPollListener{
+        void onGetLongPoll(String key,String server, String ts);
     }
 
 

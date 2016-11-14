@@ -12,9 +12,7 @@ public class ArrayListSerializible implements Serializable {
         this.persons = persons;
 
     }
-    public ArrayListSerializible(){
 
-    }
 
     public ArrayList<Person> getPersons(){
         return persons;

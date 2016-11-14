@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- Optional permission for Analytics to run. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -58,6 +59,12 @@
             </intent-filter>
         </activity>
         <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.CreateListActivty" />
+
+        <service
+            android:name="com.vkshoplist.sfilatov96.vkshoplist.VkMessangerService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name="com.google.android.gms.common.api.GoogleApiActivity"
             android:exported="false"

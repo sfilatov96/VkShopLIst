@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".VkApplication"
@@ -14,11 +15,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <meta-data android:name="DATABASE" android:value="shoplist.db"/>
-        <meta-data android:name="VERSION" android:value="2"/>
-        <meta-data android:name="QUERY_LOG" android:value="true"/>
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.vkshoplist.sfilatov96.vkshoplist"/>
+        <meta-data
+            android:name="DATABASE"
+            android:value="shoplist.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="2" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.vkshoplist.sfilatov96.vkshoplist" />
 
         <activity
             android:name="com.vk.sdk.VKServiceActivity"
@@ -34,7 +42,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateListActivty"></activity>
+        <activity android:name=".CreateListActivty" />
+
+        <service
+            android:name=".VkMessangerService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
