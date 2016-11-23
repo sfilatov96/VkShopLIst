@@ -128,6 +128,13 @@ public class CreateListActivty extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the user's current game state
         savedInstanceState.putString("shopListTitle", shopListTitle);
+        saveListToDataBase();
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    void saveListToDataBase() {
         for(ShopListItem s:ShopList){
             List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class,"list_title = ? and name = ?",s.listTitle,s.name);
             if(item.isEmpty()) {
@@ -135,9 +142,6 @@ public class CreateListActivty extends AppCompatActivity {
                 tableShopListClass.save();
             }
         }
-
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
     }
 
 
@@ -251,7 +255,7 @@ public class CreateListActivty extends AppCompatActivity {
                 public void onComplete(VKResponse response) {
 
                     super.onComplete(response);
-
+                    saveListToDataBase();
                     CreateListActivty.this.finish();
                     Toast.makeText(CreateListActivty.this, R.string.send_success, Toast.LENGTH_LONG).show();
 

@@ -29,7 +29,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class VkMessangerService extends Service {
@@ -79,7 +82,7 @@ public class VkMessangerService extends Service {
                         } catch (InterruptedException e) {
                             break;
                         }
-                        Log.d("service",key+ ' ' + server + ' ' + ts);
+                        //Log.d("service",key+ ' ' + server + ' ' + ts);
                         getJsonFromVk();
                         if (js != null) {
                             try {
@@ -101,7 +104,7 @@ public class VkMessangerService extends Service {
         return Service.START_STICKY;
     }
     private void findShopListInJsonArray(JSONArray jsonArray){
-        Log.d("jsonarray",jsonArray.toString());
+        //Log.d("jsonarray",jsonArray.toString());
         if(jsonArray.toString().contains("VkShopList")) {
             refreshLongPollServer();
             ArrayList<JSONArray> list = new ArrayList<JSONArray>();
@@ -120,7 +123,7 @@ public class VkMessangerService extends Service {
             if(Ja.toString().contains("VkShopList")){
                 try {
                     String ShopList = Ja.getString(MESSAGE).replace("&quot;","\"");
-                    JSONObject jsonShopList = new JSONObject(ShopList);
+                    final JSONObject jsonShopList = new JSONObject(ShopList);
                     String friend = Ja.getString(FRIEND_ID);
                     vkHelper.getProfileById(friend);
                     vkHelper.setListener(new VkHelper.Listener() {
@@ -131,9 +134,10 @@ public class VkMessangerService extends Service {
 
                         @Override
                         public void onAppearUserProfile(JSONObject jsonObject) {
-                            Log.d("user_appear",jsonObject.toString());
+                            //Log.d("user_appear",jsonObject.toString());
                             try {
                                 runNotification(jsonObject.getString("first_name"),jsonObject.getString("last_name"));
+                                saveInDataBase(jsonShopList,jsonObject.getString("first_name"),jsonObject.getString("last_name"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -148,9 +152,8 @@ public class VkMessangerService extends Service {
     }
     private void getJsonFromVk(){
         String url = "https://"+server+"?act=a_check&key="+key+"&ts="+ts+"&wait=25&mode=2&version=1";
-        Log.d("url",url);
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
+        //Log.d("url",url);
+
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -165,13 +168,12 @@ public class VkMessangerService extends Service {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        ;
+        };
 
 
 
     }
-    public void runNotification(String firstname, String lastname, String){
+    public void runNotification(String firstname, String lastname){
         Context context = getApplicationContext();
         Intent notificationIntent = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context,
@@ -179,22 +181,19 @@ public class VkMessangerService extends Service {
                 PendingIntent.FLAG_CANCEL_CURRENT);
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentIntent(contentIntent)
-                .setTicker("Последнее китайское предупреждение!")
+                .setSmallIcon(R.drawable.common_ic_googleplayservices)
                 .setAutoCancel(true)
-                .setLargeIcon()
                 .setContentTitle("VkShopList")
-                .setContentText(String.format("%s %s Отправил вам список",firstname,lastname)); // Текст уведомления
+                .setContentText(String.format("%s %s отправил(а) вам список!",firstname,lastname));
 
         Notification notification = builder.build();
 
-        long[] vibrate = new long[] { 250, 250, 250, 250, 250 };
-        notification.defaults = Notification.DEFAULT_SOUND |
-                Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS;
+        notification.defaults = Notification.DEFAULT_ALL;
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFY_ID, notification);
     }
 
-    public void refreshLongPollServer(){
+    private void refreshLongPollServer(){
         vkHelper.getLongPolling();
         vkHelper.setLongPollListener(new VkHelper.LongPollListener() {
             @Override
@@ -204,6 +203,41 @@ public class VkMessangerService extends Service {
                 VkMessangerService.this.ts = ts;
             }
         });
+    }
+
+
+
+
+    private void saveInDataBase(JSONObject jsonObject, String firstname, String lastname){
+        Date date = new Date();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        TableShopListClass tableShopListClass;
+        Log.d("db","isOn");
+        try {
+            String strArr = jsonObject.getString("VkShopList");
+            JSONArray jsonArray = new JSONArray(strArr);
+            JSONObject jsobj = new JSONObject();
+            for(int i=0;i < jsonArray.length();i++){
+                jsobj = jsonArray.getJSONObject(i);
+                ShopListItem shopListItem = new ShopListItem(jsobj.getString("name"),jsobj.getString("quantity"),
+                        jsobj.getString("value"),jsobj.getString("list_title"));
+
+                Log.d("shoplistitem",shopListItem.listTitle + ' ' + shopListItem.name + ' '+ shopListItem.value + ' ' + shopListItem.quantity);
+                Log.d("shoplistitem",jsonArray.getJSONObject(0).getString("list_title"));
+                tableShopListClass = new TableShopListClass(shopListItem);
+                tableShopListClass.save();
+            }
+            TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname+' '+lastname,jsobj.getString("list_title"));
+            tableShopListAuthor.save();
+
+
+
+        } catch (JSONException e) {
+            Log.d("db","except");
+            e.printStackTrace();
+        }
+
     }
 
 

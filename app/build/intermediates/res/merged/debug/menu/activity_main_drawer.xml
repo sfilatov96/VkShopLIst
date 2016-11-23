@@ -3,16 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_friends"
             android:title="@string/my_friends"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:title="@string/inbox_lists" />
-        <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_my_lists"
             android:title="@string/my_lists" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_blanks"
             android:title="@string/samples" />
     </group>
 
@@ -20,7 +17,6 @@
         <menu>
             <item
                 android:id="@+id/nav_about"
-                android:icon="@drawable/ic_menu_share"
                 android:title="@string/about" />
             <item
                 android:id="@+id/nav_logout"

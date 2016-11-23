@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
+import com.vkshoplist.sfilatov96.vkshoplist.R;
 
 
 public class LoginFragment extends Fragment {

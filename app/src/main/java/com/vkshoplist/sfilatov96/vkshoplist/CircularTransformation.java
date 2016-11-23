@@ -1,16 +1,26 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.Shader;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.squareup.picasso.Transformation;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by sfilatov96 on 18.10.16.
@@ -62,4 +72,5 @@ public class CircularTransformation implements Transformation {
     public String key() {
         return "circular" + String.valueOf(mRadius);
     }
+
 }
