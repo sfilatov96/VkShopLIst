@@ -1,8 +1,5 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,9 +15,7 @@ import java.util.Iterator;
 
 
 public class ListsFragment extends Fragment {
-    private RecyclerView recyclerView;
     ShopListRecyclerViewAdapter adapter;
-    final String FRIENDS = "FRIENDS";
     ArrayList<TableShopListAuthor> tableShopListAuthors;
 
     View rootView;
@@ -42,6 +37,7 @@ public class ListsFragment extends Fragment {
 
     }
     private void prepareShopListsList(){
+        RecyclerView recyclerView;
         fillShopListsListItem();
         recyclerView = (RecyclerView)rootView.findViewById(R.id.lists_rv);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -49,12 +45,11 @@ public class ListsFragment extends Fragment {
         adapter = new ShopListRecyclerViewAdapter(getActivity(), tableShopListAuthors);
         recyclerView.setAdapter(adapter);
 
+
     }
 
     private void fillShopListsListItem(){
-       //tableShopListAuthors = (ArrayList<TableShopListAuthor>) TableShopListAuthor.findAll(TableShopListAuthor.class);
         Iterator<TableShopListAuthor> iterator = TableShopListAuthor.findAll(TableShopListAuthor.class);
-        int i = 0;
         tableShopListAuthors = new ArrayList<TableShopListAuthor>();
         while (iterator.hasNext()) {
             TableShopListAuthor t = iterator.next();
@@ -67,4 +62,5 @@ public class ListsFragment extends Fragment {
 
 
     }
+
 }

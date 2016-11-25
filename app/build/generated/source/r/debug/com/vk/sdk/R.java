@@ -8,67 +8,67 @@ package com.vk.sdk;
 
 public final class R {
 	public static final class color {
-		public static final int vk_black = 0x7f0e005c;
-		public static final int vk_black_pressed = 0x7f0e005d;
-		public static final int vk_clear = 0x7f0e005e;
-		public static final int vk_color = 0x7f0e005f;
-		public static final int vk_grey_color = 0x7f0e0060;
-		public static final int vk_light_color = 0x7f0e0061;
-		public static final int vk_share_blue_color = 0x7f0e0062;
-		public static final int vk_share_gray_line = 0x7f0e0063;
-		public static final int vk_share_link_color = 0x7f0e0064;
-		public static final int vk_share_link_title_color = 0x7f0e0065;
-		public static final int vk_share_top_blue_color = 0x7f0e0066;
-		public static final int vk_white = 0x7f0e0067;
+		public static final int vk_black = 0x7f0f005c;
+		public static final int vk_black_pressed = 0x7f0f005d;
+		public static final int vk_clear = 0x7f0f005e;
+		public static final int vk_color = 0x7f0f005f;
+		public static final int vk_grey_color = 0x7f0f0060;
+		public static final int vk_light_color = 0x7f0f0061;
+		public static final int vk_share_blue_color = 0x7f0f0062;
+		public static final int vk_share_gray_line = 0x7f0f0063;
+		public static final int vk_share_link_color = 0x7f0f0064;
+		public static final int vk_share_link_title_color = 0x7f0f0065;
+		public static final int vk_share_top_blue_color = 0x7f0f0066;
+		public static final int vk_white = 0x7f0f0067;
 	}
 	public static final class dimen {
-		public static final int vk_share_dialog_padding = 0x7f09007f;
-		public static final int vk_share_dialog_padding_top = 0x7f090080;
+		public static final int vk_share_dialog_padding = 0x7f090088;
+		public static final int vk_share_dialog_padding_top = 0x7f090089;
 		public static final int vk_share_dialog_view_padding = 0x7f090019;
-		public static final int vk_share_link_top_margin = 0x7f090081;
-		public static final int vk_share_send_text_size = 0x7f090082;
-		public static final int vk_share_settings_button_min_height = 0x7f090083;
-		public static final int vk_share_title_link_host_size = 0x7f090084;
-		public static final int vk_share_title_link_title_size = 0x7f090085;
-		public static final int vk_share_title_text_size = 0x7f090086;
-		public static final int vk_share_top_button_padding_left = 0x7f090087;
-		public static final int vk_share_top_button_padding_right = 0x7f090088;
-		public static final int vk_share_top_image_margin = 0x7f090089;
-		public static final int vk_share_top_line_margin = 0x7f09008a;
-		public static final int vk_share_top_panel_height = 0x7f09008b;
-		public static final int vk_share_top_title_margin = 0x7f09008c;
+		public static final int vk_share_link_top_margin = 0x7f09008a;
+		public static final int vk_share_send_text_size = 0x7f09008b;
+		public static final int vk_share_settings_button_min_height = 0x7f09008c;
+		public static final int vk_share_title_link_host_size = 0x7f09008d;
+		public static final int vk_share_title_link_title_size = 0x7f09008e;
+		public static final int vk_share_title_text_size = 0x7f09008f;
+		public static final int vk_share_top_button_padding_left = 0x7f090090;
+		public static final int vk_share_top_button_padding_right = 0x7f090091;
+		public static final int vk_share_top_image_margin = 0x7f090092;
+		public static final int vk_share_top_line_margin = 0x7f090093;
+		public static final int vk_share_top_panel_height = 0x7f090094;
+		public static final int vk_share_top_title_margin = 0x7f090095;
 	}
 	public static final class drawable {
 		public static final int ic_ab_app = 0x7f02007d;
 		public static final int ic_ab_done = 0x7f02007e;
-		public static final int vk_clear_shape = 0x7f020088;
-		public static final int vk_gray_transparent_shape = 0x7f020089;
-		public static final int vk_share_send_button_background = 0x7f02008a;
+		public static final int vk_clear_shape = 0x7f02008b;
+		public static final int vk_gray_transparent_shape = 0x7f02008c;
+		public static final int vk_share_send_button_background = 0x7f02008d;
 	}
 	public static final class id {
-		public static final int attachmentLinkLayout = 0x7f0f00ba;
-		public static final int captchaAnswer = 0x7f0f00af;
-		public static final int captcha_container = 0x7f0f00ac;
-		public static final int copyUrl = 0x7f0f00b1;
-		public static final int imageView = 0x7f0f00ae;
-		public static final int imagesContainer = 0x7f0f00b9;
-		public static final int imagesScrollView = 0x7f0f00b8;
-		public static final int linkHost = 0x7f0f00bc;
-		public static final int linkTitle = 0x7f0f00bb;
-		public static final int postContentLayout = 0x7f0f00b6;
-		public static final int postSettingsLayout = 0x7f0f00bd;
-		public static final int progress = 0x7f0f00b0;
-		public static final int progressBar = 0x7f0f00ad;
-		public static final int sendButton = 0x7f0f00b5;
-		public static final int sendButtonLayout = 0x7f0f00b3;
-		public static final int sendProgress = 0x7f0f00b4;
-		public static final int shareText = 0x7f0f00b7;
-		public static final int topBarLayout = 0x7f0f00b2;
+		public static final int attachmentLinkLayout = 0x7f0c00c1;
+		public static final int captchaAnswer = 0x7f0c00b6;
+		public static final int captcha_container = 0x7f0c00b3;
+		public static final int copyUrl = 0x7f0c00b8;
+		public static final int imageView = 0x7f0c00b5;
+		public static final int imagesContainer = 0x7f0c00c0;
+		public static final int imagesScrollView = 0x7f0c00bf;
+		public static final int linkHost = 0x7f0c00c3;
+		public static final int linkTitle = 0x7f0c00c2;
+		public static final int postContentLayout = 0x7f0c00bd;
+		public static final int postSettingsLayout = 0x7f0c00c4;
+		public static final int progress = 0x7f0c00b7;
+		public static final int progressBar = 0x7f0c00b4;
+		public static final int sendButton = 0x7f0c00bc;
+		public static final int sendButtonLayout = 0x7f0c00ba;
+		public static final int sendProgress = 0x7f0c00bb;
+		public static final int shareText = 0x7f0c00be;
+		public static final int topBarLayout = 0x7f0c00b9;
 	}
 	public static final class layout {
-		public static final int vk_captcha_dialog = 0x7f040042;
-		public static final int vk_open_auth_dialog = 0x7f040043;
-		public static final int vk_share_dialog = 0x7f040044;
+		public static final int vk_captcha_dialog = 0x7f040048;
+		public static final int vk_open_auth_dialog = 0x7f040049;
+		public static final int vk_share_dialog = 0x7f04004a;
 	}
 	public static final class string {
 		public static final int vk_enter_captcha_text = 0x7f080034;

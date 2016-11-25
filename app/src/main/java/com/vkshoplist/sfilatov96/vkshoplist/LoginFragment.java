@@ -1,7 +1,5 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +9,7 @@ import android.widget.Button;
 
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
-import com.vkshoplist.sfilatov96.vkshoplist.R;
+
 
 
 public class LoginFragment extends Fragment {

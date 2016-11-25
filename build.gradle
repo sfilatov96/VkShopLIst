@@ -7,6 +7,10 @@ buildscript {
         }
         maven  {
             url "http://repo1.maven.org/maven2"
+
+        }
+        maven {
+            url 'http://yanzm.github.io/MaterialTabHost/repository'
         }
 
     }
@@ -29,6 +33,9 @@ allprojects {
         }
         maven  {
             url "http://repo1.maven.org/maven2"
+        }
+        maven {
+            url 'http://yanzm.github.io/MaterialTabHost/repository'
         }
 
     }

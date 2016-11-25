@@ -1,12 +1,8 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,58 +12,49 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.orm.SugarContext;
 import com.squareup.picasso.Picasso;
-import com.vk.sdk.VKScope;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.api.model.VKApiUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CreateListActivty extends AppCompatActivity {
     String userId;
-    final String VKUSERID = "VkUserId";
     final String VK_MESSAGE_IDENTIFIER="VkShopList";
     public ArrayList<ShopListItem> ShopList;
     private ShopListRVAdapter adapter;
     private String shopListTitle;
-    private Toolbar toolbar;
-    private AlertDialog.Builder ad;
-    private ItemTouchHelper itemTouchHelper;
-    String user;
-    private RecyclerView recyclerView;
+    String userName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
+        RecyclerView recyclerView;
+        ItemTouchHelper itemTouchHelper;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_list_activty);
         setTitle(null);
-
+        Toolbar toolbar;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         Intent intent = getIntent();
         getUserFromMainActivity(intent);
+
 
 
 
@@ -128,26 +115,28 @@ public class CreateListActivty extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the user's current game state
         savedInstanceState.putString("shopListTitle", shopListTitle);
-        saveListToDataBase();
+        saveListToDataBase(true);
 
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    void saveListToDataBase() {
+    void saveListToDataBase(boolean is_blank) {
         for(ShopListItem s:ShopList){
             List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class,"list_title = ? and name = ?",s.listTitle,s.name);
             if(item.isEmpty()) {
                 TableShopListClass tableShopListClass = new TableShopListClass(s);
                 tableShopListClass.save();
             }
+            TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(userName, ShopList.get(0).listTitle,false,is_blank);
+            tableShopListAuthor.save();
         }
     }
 
 
     public void getUserFromMainActivity(Intent intent){
         userId = intent.getStringExtra("id");
-        String userName = intent.getStringExtra("name");
+        userName = intent.getStringExtra("name");
         String userAvatar = intent.getStringExtra("avatar");
         ImageView toolbarPhoto = (ImageView) findViewById(R.id.friends_avatar);
         Picasso.with(this)
@@ -175,7 +164,7 @@ public class CreateListActivty extends AppCompatActivity {
     }
 
     public void GetShopListTitle(String title) {
-        shopListTitle = title;
+        shopListTitle = title+" - ("+getCurrentDate()+")";
         ((TextView)findViewById(R.id.listTitle)).setText(shopListTitle);
     }
 
@@ -255,7 +244,7 @@ public class CreateListActivty extends AppCompatActivity {
                 public void onComplete(VKResponse response) {
 
                     super.onComplete(response);
-                    saveListToDataBase();
+                    saveListToDataBase(false);
                     CreateListActivty.this.finish();
                     Toast.makeText(CreateListActivty.this, R.string.send_success, Toast.LENGTH_LONG).show();
 
@@ -264,10 +253,17 @@ public class CreateListActivty extends AppCompatActivity {
                 @Override
                 public void onError(VKError error) {
                     super.onError(error);
+                    saveListToDataBase(true);
                     Toast.makeText(CreateListActivty.this, R.string.internet_access_error, Toast.LENGTH_LONG).show();
                 }
             });
         }
+    }
+
+    private String getCurrentDate(){
+        Date dNow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat ("d MMM yyyy H:mm:ss");
+        return ft.format(dNow);
     }
 
 }

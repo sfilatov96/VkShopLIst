@@ -228,7 +228,7 @@ public class VkMessangerService extends Service {
                 tableShopListClass = new TableShopListClass(shopListItem);
                 tableShopListClass.save();
             }
-            TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname+' '+lastname,jsobj.getString("list_title"));
+            TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname+' '+lastname,jsobj.getString("list_title"),true,false);
             tableShopListAuthor.save();
 
 

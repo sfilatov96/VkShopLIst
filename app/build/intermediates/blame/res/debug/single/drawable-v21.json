@@ -34,5 +34,9 @@
     {
         "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/drawable-v21/ic_menu_share.xml",
         "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/drawable-v21/ic_menu_share.xml"
+    },
+    {
+        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/drawable-v21/mth_tab_widget_background_ripple.xml",
+        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/exploded-aar/net.yanzm/mth/1.0.4/res/drawable-v21/mth_tab_widget_background_ripple.xml"
     }
 ]

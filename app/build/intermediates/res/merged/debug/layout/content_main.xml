@@ -8,6 +8,14 @@
     android:paddingRight="5dp"
     android:paddingTop="10dp"
     tools:context="com.vkshoplist.sfilatov96.vkshoplist.MainActivity">
+
+
+
+    <FrameLayout
+        android:id="@+id/lists_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
     <FrameLayout
         android:id="@+id/friends_fragment"
         android:layout_width="match_parent"
@@ -18,11 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-    <FrameLayout
-        android:id="@+id/lists_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+
 
 
 

@@ -1,7 +1,6 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
-import android.app.Fragment;
-import android.app.Service;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,9 +11,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,13 +46,12 @@ public class MainActivity extends AppCompatActivity
     ListsFragment listsFragment = new ListsFragment();
 
     enum Fragments {
-        LoginFragment,FriendsFragment,ListsFragment
+        LoginFragment,FriendsFragment,ListsFragment,Nothing
     }
 
 
 
 
-    public final String VKUSERID="VkUserId";
     public final String SEARCH_KEY="SEARCH_KEY";
 
 
@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,6 +89,8 @@ public class MainActivity extends AppCompatActivity
             showFragment(Fragments.LoginFragment);
 
         }
+
+
 
 
 
@@ -150,6 +150,9 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.login_fragment, loginFragment)
                         .addToBackStack(null).commitAllowingStateLoss();
+                break;
+            default:
+                Log.d("nothing_fragments","nothing_fragments");
                 break;
 
         }
@@ -220,7 +223,7 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
 
@@ -241,7 +244,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_friends) {
             showFragment(Fragments.FriendsFragment);
         } else if (id == R.id.nav_about) {
-
+            showFragment(Fragments.Nothing);
         } else if (id == R.id.nav_logout) {
             if(VKSdk.isLoggedIn()){
                 VKSdk.logout();
@@ -288,7 +291,8 @@ public class MainActivity extends AppCompatActivity
         ImageView profile_photo = (ImageView) findViewById(R.id.profile_photo);
 
         try {
-            profile_name.setText(userProfile.getString("first_name") + " " + userProfile.getString("last_name"));
+            String login_name=userProfile.getString("first_name") + " " + userProfile.getString("last_name");
+            profile_name.setText(login_name);
             profile_email.setText(userProfile.getString("screen_name"));
             Picasso.with(this).load(userProfile.getString("photo_200")).transform(new CircularTransformation(100)).placeholder(R.drawable.user_placeholder).into(profile_photo);
         } catch (JSONException e) {
