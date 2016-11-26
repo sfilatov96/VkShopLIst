@@ -58,12 +58,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.CreateListActivty" />
+        <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.CreateListActivity" />
 
         <service
             android:name="com.vkshoplist.sfilatov96.vkshoplist.VkMessangerService"
             android:enabled="true"
             android:exported="true" />
+
+        <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.ExecuteListActivity" />
+
+        <receiver
+            android:name="com.vkshoplist.sfilatov96.vkshoplist.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name="com.google.android.gms.common.api.GoogleApiActivity"

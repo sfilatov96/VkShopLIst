@@ -14,6 +14,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -37,6 +38,7 @@ import java.util.List;
 
 public class VkMessangerService extends Service {
     //AsyncHttpClient client = new AsyncHttpClient();
+    private final String APP_PREFERENCES = "LONG_POLL_SERVER";
     private Thread thread;
     private int PAUSE = 5000;
     private static final int NOTIFY_ID = 101;
@@ -49,7 +51,7 @@ public class VkMessangerService extends Service {
     OkHttpClient client = new OkHttpClient();
     VkHelper vkHelper = new VkHelper(this);
 
-
+    SharedPreferences LastLongPollServer;
 
     public VkMessangerService() {
     }
@@ -63,12 +65,18 @@ public class VkMessangerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        LastLongPollServer = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         GsonBuilder builder = new GsonBuilder();
         final Gson gson = builder.create();
         key = intent.getStringExtra("KEY");
         server = intent.getStringExtra("SERVER");
         ts = intent.getStringExtra("TS");
+        SharedPreferences.Editor editor = LastLongPollServer.edit();
+        editor.putString("KEY", key);
+        editor.putString("SERVER", server);
+        editor.putString("TS", ts);
+        editor.apply();
+
         //getJsonFromVk();
         if (thread == null) {
             thread = new Thread(new Runnable() {
@@ -82,7 +90,7 @@ public class VkMessangerService extends Service {
                         } catch (InterruptedException e) {
                             break;
                         }
-                        //Log.d("service",key+ ' ' + server + ' ' + ts);
+                        Log.d("service",key+ ' ' + server + ' ' + ts);
                         getJsonFromVk();
                         if (js != null) {
                             try {
@@ -104,8 +112,8 @@ public class VkMessangerService extends Service {
         return Service.START_STICKY;
     }
     private void findShopListInJsonArray(JSONArray jsonArray){
-        //Log.d("jsonarray",jsonArray.toString());
-        if(jsonArray.toString().contains("VkShopList")) {
+        Log.d("jsonarray",jsonArray.toString());
+        if(jsonArray.toString().contains("VkShopList_Open")) {
             refreshLongPollServer();
             ArrayList<JSONArray> list = new ArrayList<JSONArray>();
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -120,7 +128,7 @@ public class VkMessangerService extends Service {
     }
     private void workWithList(ArrayList<JSONArray> list){
         for(JSONArray Ja: list){
-            if(Ja.toString().contains("VkShopList")){
+            if(Ja.toString().contains("VkShopList_Open")){
                 try {
                     String ShopList = Ja.getString(MESSAGE).replace("&quot;","\"");
                     final JSONObject jsonShopList = new JSONObject(ShopList);
@@ -134,10 +142,10 @@ public class VkMessangerService extends Service {
 
                         @Override
                         public void onAppearUserProfile(JSONObject jsonObject) {
-                            //Log.d("user_appear",jsonObject.toString());
+                            Log.d("user_appear",jsonObject.toString());
                             try {
-                                runNotification(jsonObject.getString("first_name"),jsonObject.getString("last_name"));
-                                saveInDataBase(jsonShopList,jsonObject.getString("first_name"),jsonObject.getString("last_name"));
+
+                                saveInDataBase(jsonShopList,jsonObject.getString("first_name"),jsonObject.getString("last_name"),jsonObject.getString("id"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -168,7 +176,7 @@ public class VkMessangerService extends Service {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        };
+        }
 
 
 
@@ -201,6 +209,11 @@ public class VkMessangerService extends Service {
                 VkMessangerService.this.key = key;
                 VkMessangerService.this.server = server;
                 VkMessangerService.this.ts = ts;
+                SharedPreferences.Editor editor = LastLongPollServer.edit();
+                editor.putString("KEY", key);
+                editor.putString("SERVER", server);
+                editor.putString("TS", ts);
+                editor.apply();
             }
         });
     }
@@ -208,28 +221,35 @@ public class VkMessangerService extends Service {
 
 
 
-    private void saveInDataBase(JSONObject jsonObject, String firstname, String lastname){
+    private void saveInDataBase(JSONObject jsonObject, String firstname, String lastname, String user_id){
         Date date = new Date();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         TableShopListClass tableShopListClass;
-        Log.d("db","isOn");
         try {
-            String strArr = jsonObject.getString("VkShopList");
+            String strArr = jsonObject.getString("VkShopList_Open");
             JSONArray jsonArray = new JSONArray(strArr);
-            JSONObject jsobj = new JSONObject();
-            for(int i=0;i < jsonArray.length();i++){
-                jsobj = jsonArray.getJSONObject(i);
-                ShopListItem shopListItem = new ShopListItem(jsobj.getString("name"),jsobj.getString("quantity"),
-                        jsobj.getString("value"),jsobj.getString("list_title"));
+            JSONObject jsobj;
+            jsobj = jsonArray.getJSONObject(0);
+            List<TableShopListAuthor> ta = TableShopListAuthor.find(TableShopListAuthor.class,"title = ? and uservk = ?",jsobj.getString("list_title"),user_id);
+            if(ta.isEmpty()) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsobj = jsonArray.getJSONObject(i);
+                    ShopListItem shopListItem = new ShopListItem(jsobj.getString("name"), jsobj.getString("quantity"),
+                            jsobj.getString("value"), jsobj.getString("list_title"));
 
-                Log.d("shoplistitem",shopListItem.listTitle + ' ' + shopListItem.name + ' '+ shopListItem.value + ' ' + shopListItem.quantity);
-                Log.d("shoplistitem",jsonArray.getJSONObject(0).getString("list_title"));
-                tableShopListClass = new TableShopListClass(shopListItem);
-                tableShopListClass.save();
+                    Log.d("shoplistitem", shopListItem.listTitle + ' ' + shopListItem.name + ' ' + shopListItem.value + ' ' + shopListItem.quantity);
+                    Log.d("shoplistitem", jsonArray.getJSONObject(0).getString("list_title"));
+                    tableShopListClass = new TableShopListClass(shopListItem);
+                    tableShopListClass.save();
+                }
+
+
+                TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname + ' ' + lastname, jsobj.getString("list_title"), true, false, user_id);
+                tableShopListAuthor.save();
+
+                runNotification(firstname, lastname);
             }
-            TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname+' '+lastname,jsobj.getString("list_title"),true,false);
-            tableShopListAuthor.save();
 
 
 

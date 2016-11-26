@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
     public  class FriendsFragment extends Fragment {
         private RecyclerView recyclerView;
-        RVAdapter adapter;
+        FriendsRecyclerViewAdapter adapter;
         final String FRIENDS = "FRIENDS";
         View rootView;
 
@@ -72,7 +72,7 @@ import java.util.ArrayList;
                     new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                         @Override public void onItemClick(View view, int position) {
                             Person person = adapter.getIdByPosition(position);
-                            Intent intent = new Intent(getActivity(), CreateListActivty.class);
+                            Intent intent = new Intent(getActivity(), CreateListActivity.class);
                             String id = String.valueOf(person.id);
                             intent.putExtra("id",id);
                             intent.putExtra("name",person.name);
@@ -103,7 +103,7 @@ import java.util.ArrayList;
 
         }
         public void fillRecycleView(){
-            adapter = new RVAdapter(getActivity(), friends);
+            adapter = new FriendsRecyclerViewAdapter(getActivity(), friends);
             recyclerView.setAdapter(adapter);
         }
 

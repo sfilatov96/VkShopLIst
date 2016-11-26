@@ -8,18 +8,18 @@ package com.vk.sdk;
 
 public final class R {
 	public static final class color {
-		public static final int vk_black = 0x7f0f005c;
-		public static final int vk_black_pressed = 0x7f0f005d;
-		public static final int vk_clear = 0x7f0f005e;
-		public static final int vk_color = 0x7f0f005f;
-		public static final int vk_grey_color = 0x7f0f0060;
-		public static final int vk_light_color = 0x7f0f0061;
-		public static final int vk_share_blue_color = 0x7f0f0062;
-		public static final int vk_share_gray_line = 0x7f0f0063;
-		public static final int vk_share_link_color = 0x7f0f0064;
-		public static final int vk_share_link_title_color = 0x7f0f0065;
-		public static final int vk_share_top_blue_color = 0x7f0f0066;
-		public static final int vk_white = 0x7f0f0067;
+		public static final int vk_black = 0x7f0f005d;
+		public static final int vk_black_pressed = 0x7f0f005e;
+		public static final int vk_clear = 0x7f0f005f;
+		public static final int vk_color = 0x7f0f0060;
+		public static final int vk_grey_color = 0x7f0f0061;
+		public static final int vk_light_color = 0x7f0f0062;
+		public static final int vk_share_blue_color = 0x7f0f0063;
+		public static final int vk_share_gray_line = 0x7f0f0064;
+		public static final int vk_share_link_color = 0x7f0f0065;
+		public static final int vk_share_link_title_color = 0x7f0f0066;
+		public static final int vk_share_top_blue_color = 0x7f0f0067;
+		public static final int vk_white = 0x7f0f0068;
 	}
 	public static final class dimen {
 		public static final int vk_share_dialog_padding = 0x7f090088;
@@ -46,29 +46,29 @@ public final class R {
 		public static final int vk_share_send_button_background = 0x7f02008d;
 	}
 	public static final class id {
-		public static final int attachmentLinkLayout = 0x7f0c00c1;
-		public static final int captchaAnswer = 0x7f0c00b6;
-		public static final int captcha_container = 0x7f0c00b3;
-		public static final int copyUrl = 0x7f0c00b8;
-		public static final int imageView = 0x7f0c00b5;
-		public static final int imagesContainer = 0x7f0c00c0;
-		public static final int imagesScrollView = 0x7f0c00bf;
-		public static final int linkHost = 0x7f0c00c3;
-		public static final int linkTitle = 0x7f0c00c2;
-		public static final int postContentLayout = 0x7f0c00bd;
-		public static final int postSettingsLayout = 0x7f0c00c4;
-		public static final int progress = 0x7f0c00b7;
-		public static final int progressBar = 0x7f0c00b4;
-		public static final int sendButton = 0x7f0c00bc;
-		public static final int sendButtonLayout = 0x7f0c00ba;
-		public static final int sendProgress = 0x7f0c00bb;
-		public static final int shareText = 0x7f0c00be;
-		public static final int topBarLayout = 0x7f0c00b9;
+		public static final int attachmentLinkLayout = 0x7f0c00c2;
+		public static final int captchaAnswer = 0x7f0c00b7;
+		public static final int captcha_container = 0x7f0c00b4;
+		public static final int copyUrl = 0x7f0c00b9;
+		public static final int imageView = 0x7f0c00b6;
+		public static final int imagesContainer = 0x7f0c00c1;
+		public static final int imagesScrollView = 0x7f0c00c0;
+		public static final int linkHost = 0x7f0c00c4;
+		public static final int linkTitle = 0x7f0c00c3;
+		public static final int postContentLayout = 0x7f0c00be;
+		public static final int postSettingsLayout = 0x7f0c00c5;
+		public static final int progress = 0x7f0c00b8;
+		public static final int progressBar = 0x7f0c00b5;
+		public static final int sendButton = 0x7f0c00bd;
+		public static final int sendButtonLayout = 0x7f0c00bb;
+		public static final int sendProgress = 0x7f0c00bc;
+		public static final int shareText = 0x7f0c00bf;
+		public static final int topBarLayout = 0x7f0c00ba;
 	}
 	public static final class layout {
-		public static final int vk_captcha_dialog = 0x7f040048;
-		public static final int vk_open_auth_dialog = 0x7f040049;
-		public static final int vk_share_dialog = 0x7f04004a;
+		public static final int vk_captcha_dialog = 0x7f040049;
+		public static final int vk_open_auth_dialog = 0x7f04004a;
+		public static final int vk_share_dialog = 0x7f04004b;
 	}
 	public static final class string {
 		public static final int vk_enter_captcha_text = 0x7f080034;

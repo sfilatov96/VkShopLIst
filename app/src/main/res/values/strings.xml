@@ -49,5 +49,10 @@
     <string name="send_success">Список успешно отправлен!</string>
 
     <string name="login_through_vk">Войти через Vk</string>
+    <string name="is_outbox_shoplist">Этот список является исходящим</string>
+    <string name="shoplist_allready_performed">Этот список уже выполнен</string>
+    <string name="sender">Отправитель: </string>
+    <string name="receiver">Получатель: </string>
+    <string name="completed">Завершено</string>
 
 </resources>

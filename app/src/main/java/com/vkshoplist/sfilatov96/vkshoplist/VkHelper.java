@@ -28,6 +28,7 @@ public class VkHelper {
     public final String OFFLINE="offline";
     public Listener listener;
     public LongPollListener longPollListener;
+    public MessageSendListener messageSendListener;
 
     VkHelper(Context context){
         this.context = context;
@@ -72,6 +73,27 @@ public class VkHelper {
 
 
 
+    }
+
+    public void sendShopListByFriendsID(String friend_id,JSONObject prepareJson){
+        final VKRequest vkRequest = new VKRequest("messages.send", VKParameters.from(VKApiConst.USER_ID, friend_id ,VKApiConst.MESSAGE, prepareJson.toString()));
+        vkRequest.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+
+                super.onComplete(response);
+                messageSendListener.onComplete();
+
+
+            }
+
+            @Override
+            public void onError(VKError error) {
+                messageSendListener.onError();
+                super.onError(error);
+
+            }
+        });
     }
 
 
@@ -183,11 +205,18 @@ public class VkHelper {
         void onGetLongPoll(String key,String server, String ts);
     }
 
+    public interface MessageSendListener{
+        void onComplete();
+        void onError();
+    }
+
 
 
     public void setListener(Listener listener){
         this.listener = listener;
     }
 
-
+    public void setMessageSendListener(MessageSendListener messageSendListener){
+        this.messageSendListener = messageSendListener;
+    }
 }

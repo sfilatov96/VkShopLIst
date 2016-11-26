@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by sfilatov96 on 20.11.16.
  */
-public class ShopListRecyclerViewAdapter extends RecyclerView.Adapter<ShopListRecyclerViewAdapter.PersonViewHolder>{
+public class ShopListsRecyclerViewAdapter extends RecyclerView.Adapter<ShopListsRecyclerViewAdapter.PersonViewHolder>{
     Context context;
     ArrayList<TableShopListAuthor> tableShopListAuthors;
     ArrayList<TableShopListAuthor> mDataSet;
@@ -25,12 +26,14 @@ public class ShopListRecyclerViewAdapter extends RecyclerView.Adapter<ShopListRe
         TextView list_title;
         TextView author;
         TextView list_date;
+        TextView is_performed;
 
 
         PersonViewHolder(View itemView) {
 
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv_lists);
+            is_performed = (TextView)itemView.findViewById(R.id.is_performed);
             list_title = (TextView)itemView.findViewById(R.id.shop_list_title);
             list_date = (TextView)itemView.findViewById(R.id.shop_list_date);
             author = (TextView)itemView.findViewById(R.id.buyer_name);
@@ -39,7 +42,8 @@ public class ShopListRecyclerViewAdapter extends RecyclerView.Adapter<ShopListRe
         }
     }
 
-    ShopListRecyclerViewAdapter(Context context, ArrayList<TableShopListAuthor> tableShopListAuthors){
+    ShopListsRecyclerViewAdapter(Context context, ArrayList<TableShopListAuthor> tableShopListAuthors){
+        Collections.reverse(tableShopListAuthors);
         this.tableShopListAuthors = tableShopListAuthors;
         mDataSet = this.tableShopListAuthors;
         this.context = context;
@@ -59,13 +63,20 @@ public class ShopListRecyclerViewAdapter extends RecyclerView.Adapter<ShopListRe
 
     @Override
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
-        personViewHolder.author.setText(tableShopListAuthors.get(i).author);
+        String sender_or_receiver;
         String[] date_and_title = tableShopListAuthors.get(i).title.split(" - ");
         personViewHolder.list_title.setText(date_and_title[0]);
         personViewHolder.list_date.setText(date_and_title[1]);
-        if(!tableShopListAuthors.get(i).is_performed){
-            personViewHolder.cv.setBackgroundColor(Color.WHITE);
+        if(tableShopListAuthors.get(i).is_performed){
+            personViewHolder.cv.setAlpha(((float) 0.35));
+            personViewHolder.is_performed.setText(R.string.completed);
         }
+        if(tableShopListAuthors.get(i).is_inbox_shoplist){
+            sender_or_receiver = "Отправитель: " + tableShopListAuthors.get(i).author;
+        } else {
+            sender_or_receiver = "Получатель: " + tableShopListAuthors.get(i).author;
+        }
+        personViewHolder.author.setText(sender_or_receiver);
 
     }
 
@@ -74,6 +85,12 @@ public class ShopListRecyclerViewAdapter extends RecyclerView.Adapter<ShopListRe
         if (tableShopListAuthors != null) {
             return tableShopListAuthors.size();
         } else return 0;
+    }
+
+    public TableShopListAuthor getListByPosition(int pos){
+        TableShopListAuthor ta  = tableShopListAuthors.get(pos);
+        return ta;
+
     }
 
 }

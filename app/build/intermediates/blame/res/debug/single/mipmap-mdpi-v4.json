@@ -4,6 +4,10 @@
         "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/mipmap-mdpi/ic_add_white_24dp.png"
     },
     {
+        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/ic_done_white_24dp.png",
+        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/mipmap-mdpi/ic_done_white_24dp.png"
+    },
+    {
         "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/ic_search_white_24dp.png",
         "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/mipmap-mdpi/ic_search_white_24dp.png"
     },

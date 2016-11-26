@@ -16,9 +16,11 @@ public class TableShopListAuthor extends SugarRecord {
     boolean is_performed;
     boolean is_inbox_shoplist;
     boolean is_blank;
+    String uservk;
     public TableShopListAuthor(){
     }
-    public TableShopListAuthor(String author,String title,boolean is_inbox_shoplist, boolean is_blank) {
+    public TableShopListAuthor(String author,String title,boolean is_inbox_shoplist, boolean is_blank, String user_id) {
+        this.uservk = user_id;
         this.author = author;
         this.title = title;
         this.is_performed = false;
