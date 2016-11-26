@@ -5,12 +5,8 @@ package com.vkshoplist.sfilatov96.vkshoplist;
  */
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +15,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
+public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecyclerViewAdapter.PersonViewHolder> {
     Bitmap bitmap;
     Context context;
     public final String ONLINE="online";
@@ -49,7 +43,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
 
 
-    RVAdapter(Context context, ArrayList<Person> persons){
+    FriendsRecyclerViewAdapter(Context context, ArrayList<Person> persons){
         this.persons = persons;
         mDataSet = this.persons;
         this.context = context;

@@ -58,13 +58,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.CreateListActivty" />
+        <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.CreateListActivity" />
 
         <service
             android:name="com.vkshoplist.sfilatov96.vkshoplist.VkMessangerService"
             android:enabled="true"
             android:exported="true" />
 
+        <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.ExecuteListActivity" />
         <activity
             android:name="com.google.android.gms.common.api.GoogleApiActivity"
             android:exported="false"

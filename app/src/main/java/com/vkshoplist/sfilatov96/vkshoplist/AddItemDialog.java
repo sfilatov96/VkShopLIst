@@ -1,10 +1,8 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 /**
  * Created by sfilatov96 on 29.10.16.
@@ -54,10 +51,10 @@ public class AddItemDialog extends DialogFragment {
                     EditText quanity_input = (EditText) view.findViewById(R.id.quantity_input);
                     Spinner spinner = (Spinner) view.findViewById(R.id.values_spinner);
                     if( name_input.getText().toString().isEmpty()  || quanity_input.getText().toString().isEmpty() ){
-                        ((CreateListActivty)getActivity()).emptyFields();
+                        ((CreateListActivity)getActivity()).emptyFields();
 
                     } else {
-                        ((CreateListActivty) getActivity()).FillShopList(name_input.getText().toString(), quanity_input.getText().toString(),
+                        ((CreateListActivity) getActivity()).FillShopList(name_input.getText().toString(), quanity_input.getText().toString(),
                                 spinner.getSelectedItem().toString());
                         AddItemDialog.this.getDialog().dismiss();
                     }

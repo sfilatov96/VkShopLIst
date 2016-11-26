@@ -31,6 +31,7 @@ import com.vk.sdk.api.VKError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -39,13 +40,13 @@ public class MainActivity extends AppCompatActivity
 
     private SearchView mSearchView;
     String mSearchString;
-
+    Fragments currentFragment;
     Tracker mTracker;
     LoginFragment loginFragment = new LoginFragment();
     FriendsFragment friendsFragment = new FriendsFragment();
     ListsFragment listsFragment = new ListsFragment();
 
-    enum Fragments {
+    enum Fragments implements Serializable{
         LoginFragment,FriendsFragment,ListsFragment,Nothing
     }
 
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,12 +77,16 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState != null) {
             mSearchString = savedInstanceState.getString(SEARCH_KEY);
+            currentFragment = (Fragments) savedInstanceState.getSerializable("CURRENT_FRAGMENT");
         }
 
 
         if ( VKSdk.isLoggedIn()) {
+            if(currentFragment == null) {
+                showFragment(Fragments.FriendsFragment);
+            } else {
 
-            showFragment(Fragments.FriendsFragment);
+            }
             getProfileFromVk();
 
 
@@ -102,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         mSearchString = mSearchView.getQuery().toString();
         outState.putString(SEARCH_KEY, mSearchString);
+        outState.putSerializable("CURRENT_FRAGMENT",currentFragment);
     }
 
     private void runService(String key, String server, String ts){
@@ -134,7 +141,7 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null).commitAllowingStateLoss();
         }
 
-
+        currentFragment = fragments;
         switch(fragments){
             case FriendsFragment:
                 getSupportFragmentManager().beginTransaction()

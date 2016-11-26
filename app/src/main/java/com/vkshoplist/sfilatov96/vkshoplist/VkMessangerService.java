@@ -82,7 +82,7 @@ public class VkMessangerService extends Service {
                         } catch (InterruptedException e) {
                             break;
                         }
-                        //Log.d("service",key+ ' ' + server + ' ' + ts);
+                        Log.d("service",key+ ' ' + server + ' ' + ts);
                         getJsonFromVk();
                         if (js != null) {
                             try {
@@ -104,8 +104,8 @@ public class VkMessangerService extends Service {
         return Service.START_STICKY;
     }
     private void findShopListInJsonArray(JSONArray jsonArray){
-        //Log.d("jsonarray",jsonArray.toString());
-        if(jsonArray.toString().contains("VkShopList")) {
+        Log.d("jsonarray",jsonArray.toString());
+        if(jsonArray.toString().contains("VkShopList_Open")) {
             refreshLongPollServer();
             ArrayList<JSONArray> list = new ArrayList<JSONArray>();
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -120,7 +120,7 @@ public class VkMessangerService extends Service {
     }
     private void workWithList(ArrayList<JSONArray> list){
         for(JSONArray Ja: list){
-            if(Ja.toString().contains("VkShopList")){
+            if(Ja.toString().contains("VkShopList_Open")){
                 try {
                     String ShopList = Ja.getString(MESSAGE).replace("&quot;","\"");
                     final JSONObject jsonShopList = new JSONObject(ShopList);
@@ -134,10 +134,10 @@ public class VkMessangerService extends Service {
 
                         @Override
                         public void onAppearUserProfile(JSONObject jsonObject) {
-                            //Log.d("user_appear",jsonObject.toString());
+                            Log.d("user_appear",jsonObject.toString());
                             try {
-                                runNotification(jsonObject.getString("first_name"),jsonObject.getString("last_name"));
-                                saveInDataBase(jsonShopList,jsonObject.getString("first_name"),jsonObject.getString("last_name"));
+
+                                saveInDataBase(jsonShopList,jsonObject.getString("first_name"),jsonObject.getString("last_name"),jsonObject.getString("id"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -168,7 +168,7 @@ public class VkMessangerService extends Service {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        };
+        }
 
 
 
@@ -208,28 +208,35 @@ public class VkMessangerService extends Service {
 
 
 
-    private void saveInDataBase(JSONObject jsonObject, String firstname, String lastname){
+    private void saveInDataBase(JSONObject jsonObject, String firstname, String lastname, String user_id){
         Date date = new Date();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         TableShopListClass tableShopListClass;
-        Log.d("db","isOn");
         try {
-            String strArr = jsonObject.getString("VkShopList");
+            String strArr = jsonObject.getString("VkShopList_Open");
             JSONArray jsonArray = new JSONArray(strArr);
-            JSONObject jsobj = new JSONObject();
-            for(int i=0;i < jsonArray.length();i++){
-                jsobj = jsonArray.getJSONObject(i);
-                ShopListItem shopListItem = new ShopListItem(jsobj.getString("name"),jsobj.getString("quantity"),
-                        jsobj.getString("value"),jsobj.getString("list_title"));
+            JSONObject jsobj;
+            jsobj = jsonArray.getJSONObject(0);
+            List<TableShopListAuthor> ta = TableShopListAuthor.find(TableShopListAuthor.class,"title = ? and user_id",jsobj.getString("list_title"),user_id);
+            if(ta.isEmpty()) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsobj = jsonArray.getJSONObject(i);
+                    ShopListItem shopListItem = new ShopListItem(jsobj.getString("name"), jsobj.getString("quantity"),
+                            jsobj.getString("value"), jsobj.getString("list_title"));
 
-                Log.d("shoplistitem",shopListItem.listTitle + ' ' + shopListItem.name + ' '+ shopListItem.value + ' ' + shopListItem.quantity);
-                Log.d("shoplistitem",jsonArray.getJSONObject(0).getString("list_title"));
-                tableShopListClass = new TableShopListClass(shopListItem);
-                tableShopListClass.save();
+                    Log.d("shoplistitem", shopListItem.listTitle + ' ' + shopListItem.name + ' ' + shopListItem.value + ' ' + shopListItem.quantity);
+                    Log.d("shoplistitem", jsonArray.getJSONObject(0).getString("list_title"));
+                    tableShopListClass = new TableShopListClass(shopListItem);
+                    tableShopListClass.save();
+                }
+
+
+                TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname + ' ' + lastname, jsobj.getString("list_title"), true, false, user_id);
+                tableShopListAuthor.save();
+
+                runNotification(firstname, lastname);
             }
-            TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname+' '+lastname,jsobj.getString("list_title"),true,false);
-            tableShopListAuthor.save();
 
 
 

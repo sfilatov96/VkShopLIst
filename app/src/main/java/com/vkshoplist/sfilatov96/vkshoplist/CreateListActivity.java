@@ -33,11 +33,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CreateListActivty extends AppCompatActivity {
+public class CreateListActivity extends AppCompatActivity {
     String userId;
-    final String VK_MESSAGE_IDENTIFIER="VkShopList";
+    public final String VK_MESSAGE_IDENTIFIER="VkShopList_Open";
     public ArrayList<ShopListItem> ShopList;
-    private ShopListRVAdapter adapter;
+    private ShopListItemRecyclerViewAdapter adapter;
     private String shopListTitle;
     String userName;
 
@@ -74,7 +74,7 @@ public class CreateListActivty extends AppCompatActivity {
             }
         });
         ShopList = new ArrayList<>();
-        adapter = new ShopListRVAdapter(this, ShopList);
+        adapter = new ShopListItemRecyclerViewAdapter(this, ShopList);
         recyclerView.setAdapter(adapter);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
@@ -128,9 +128,10 @@ public class CreateListActivty extends AppCompatActivity {
                 TableShopListClass tableShopListClass = new TableShopListClass(s);
                 tableShopListClass.save();
             }
-            TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(userName, ShopList.get(0).listTitle,false,is_blank);
-            tableShopListAuthor.save();
+
         }
+        TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(userName, ShopList.get(0).listTitle,false,is_blank,userId);
+        tableShopListAuthor.save();
     }
 
 
@@ -238,23 +239,20 @@ public class CreateListActivty extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            final VKRequest vkRequest = new VKRequest("messages.send", VKParameters.from(VKApiConst.USER_ID, userId ,VKApiConst.MESSAGE, prepareJson.toString()));
-            vkRequest.executeWithListener(new VKRequest.VKRequestListener() {
+            VkHelper vkHelper = new VkHelper(this);
+            vkHelper.sendShopListByFriendsID(userId,prepareJson);
+            vkHelper.setMessageSendListener(new VkHelper.MessageSendListener() {
                 @Override
-                public void onComplete(VKResponse response) {
-
-                    super.onComplete(response);
+                public void onComplete() {
                     saveListToDataBase(false);
-                    CreateListActivty.this.finish();
-                    Toast.makeText(CreateListActivty.this, R.string.send_success, Toast.LENGTH_LONG).show();
-
+                    CreateListActivity.this.finish();
+                    Toast.makeText(CreateListActivity.this, R.string.send_success, Toast.LENGTH_LONG).show();
                 }
 
                 @Override
-                public void onError(VKError error) {
-                    super.onError(error);
+                public void onError() {
                     saveListToDataBase(true);
-                    Toast.makeText(CreateListActivty.this, R.string.internet_access_error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateListActivity.this, R.string.internet_access_error, Toast.LENGTH_LONG).show();
                 }
             });
         }

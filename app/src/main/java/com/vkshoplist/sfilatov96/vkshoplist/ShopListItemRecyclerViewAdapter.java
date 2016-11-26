@@ -1,24 +1,19 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by sfilatov96 on 29.10.16.
  */
-public class ShopListRVAdapter extends RecyclerView.Adapter<ShopListRVAdapter.PersonViewHolder>{
+public class ShopListItemRecyclerViewAdapter extends RecyclerView.Adapter<ShopListItemRecyclerViewAdapter.PersonViewHolder>{
     Context context;
     public final String ONLINE="online";
     ArrayList<ShopListItem> mDataSet;
@@ -40,7 +35,7 @@ public class ShopListRVAdapter extends RecyclerView.Adapter<ShopListRVAdapter.Pe
         }
     }
 
-    ShopListRVAdapter(Context context, ArrayList<ShopListItem> shopListItems){
+    ShopListItemRecyclerViewAdapter(Context context, ArrayList<ShopListItem> shopListItems){
         this.shopListItems = shopListItems;
         mDataSet = this.shopListItems;
         this.context = context;
