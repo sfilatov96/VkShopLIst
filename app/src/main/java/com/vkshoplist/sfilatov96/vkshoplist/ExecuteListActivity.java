@@ -1,5 +1,7 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
+
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +36,6 @@ public class ExecuteListActivity extends AppCompatActivity {
     VkHelper vkHelper;
     String user_id;
     boolean is_performed;
-
 
 
     @Override
@@ -116,6 +117,7 @@ public class ExecuteListActivity extends AppCompatActivity {
         List<TableShopListAuthor> list = TableShopListAuthor.find(TableShopListAuthor.class, "title = ?", shopListTitle);
         if(list != null){
             user_id = list.get(0).uservk;
+
             is_performed = list.get(0).is_performed;
         }
 
@@ -155,12 +157,14 @@ public class ExecuteListActivity extends AppCompatActivity {
         outState.putString("SHOPLIST_TITLE",shopListTitle);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
 
 
     }
+
 
     ItemTouchHelper.SimpleCallback simpleCallbackItemTouchHelper = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT ){
 

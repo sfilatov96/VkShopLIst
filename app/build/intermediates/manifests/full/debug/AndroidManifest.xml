@@ -66,7 +66,6 @@
             android:exported="true" />
 
         <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.ExecuteListActivity" />
-
         <receiver
             android:name="com.vkshoplist.sfilatov96.vkshoplist.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver" >

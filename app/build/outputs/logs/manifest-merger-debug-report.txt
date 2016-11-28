@@ -1,6 +1,8 @@
 -- Merging decision tree log ---
 manifest
+
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:2:1-63:12
+
 	package
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:3:5-51
 		INJECTED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml
@@ -554,6 +556,7 @@ activity#com.vkshoplist.sfilatov96.vkshoplist.ExecuteListActivity
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:52:9-66
 	android:name
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:52:19-54
+
 receiver#com.vkshoplist.sfilatov96.vkshoplist.NetworkChangeReceiver
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:53:9-60:20
 	android:label
