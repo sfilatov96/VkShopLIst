@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 /**
  * Created by sfilatov96 on 29.10.16.
@@ -33,7 +31,7 @@ public class TitleShopListDialog extends DialogFragment {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         TitleShopListDialog.this.getDialog().cancel();
-                        ((CreateListActivty)getActivity()).finish();
+                        ((CreateListActivity)getActivity()).finish();
                     }
                 });
         return builder.create();
@@ -51,10 +49,10 @@ public class TitleShopListDialog extends DialogFragment {
                 public void onClick(View v) {
                     EditText title_input = (EditText) view.findViewById(R.id.title_input);
                     if( title_input.getText().toString().isEmpty()){
-                        ((CreateListActivty)getActivity()).emptyFields();
+                        ((CreateListActivity)getActivity()).emptyFields();
 
                     } else {
-                        ((CreateListActivty) getActivity()).GetShopListTitle(title_input.getText().toString());
+                        ((CreateListActivity) getActivity()).GetShopListTitle(title_input.getText().toString());
                         TitleShopListDialog.this.getDialog().dismiss();
                     }
                 }

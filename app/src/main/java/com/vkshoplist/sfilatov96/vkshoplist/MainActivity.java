@@ -1,7 +1,12 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
 
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +36,7 @@ import com.vk.sdk.api.VKError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -39,24 +45,45 @@ public class MainActivity extends AppCompatActivity
 
     private SearchView mSearchView;
     String mSearchString;
-
+    Fragments currentFragment;
     Tracker mTracker;
     LoginFragment loginFragment = new LoginFragment();
     FriendsFragment friendsFragment = new FriendsFragment();
     ListsFragment listsFragment = new ListsFragment();
+    private final String NO_INTERNET_ACCESS = "Not connected to Internet";
+    private final String APP_PREFERENCES = "LONG_POLL_SERVER";
 
-    enum Fragments {
+    enum Fragments implements Serializable{
         LoginFragment,FriendsFragment,ListsFragment,Nothing
     }
+
+
+    SharedPreferences LastLongPollServer;
 
 
 
 
     public final String SEARCH_KEY="SEARCH_KEY";
+    private BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
+            Bundle b = intent.getExtras();
+
+            String message = b.getString("message");
+
+            if(message == NO_INTERNET_ACCESS){
+                Intent i = new Intent(MainActivity.this,VkMessangerService.class);
+                stopService(i);
+            } else {
+
+            }
+        }
+    };;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,12 +102,16 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState != null) {
             mSearchString = savedInstanceState.getString(SEARCH_KEY);
+            currentFragment = (Fragments) savedInstanceState.getSerializable("CURRENT_FRAGMENT");
         }
 
 
         if ( VKSdk.isLoggedIn()) {
-
-            showFragment(Fragments.FriendsFragment);
+            if(currentFragment == null) {
+                showFragment(Fragments.FriendsFragment);
+            } else {
+                showFragment(currentFragment);
+            }
             getProfileFromVk();
 
 
@@ -89,6 +120,9 @@ public class MainActivity extends AppCompatActivity
             showFragment(Fragments.LoginFragment);
 
         }
+        LastLongPollServer = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+
+
 
 
 
@@ -102,6 +136,7 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         mSearchString = mSearchView.getQuery().toString();
         outState.putString(SEARCH_KEY, mSearchString);
+        outState.putSerializable("CURRENT_FRAGMENT",currentFragment);
     }
 
     private void runService(String key, String server, String ts){
@@ -134,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null).commitAllowingStateLoss();
         }
 
-
+        currentFragment = fragments;
         switch(fragments){
             case FriendsFragment:
                 getSupportFragmentManager().beginTransaction()
@@ -276,13 +311,19 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        vkHelper.getLongPolling();
-        vkHelper.setLongPollListener(new VkHelper.LongPollListener() {
-            @Override
-            public void onGetLongPoll(String key, String server, String ts) {
-                runService(key,server,ts);
-            }
-        });
+        if((LastLongPollServer != null) && (!LastLongPollServer.getString("KEY", "").isEmpty())) {
+            runService(LastLongPollServer.getString("KEY", ""),
+                    LastLongPollServer.getString("SERVER",""),
+                    LastLongPollServer.getString("TS",""));
+        } else {
+            vkHelper.getLongPolling();
+            vkHelper.setLongPollListener(new VkHelper.LongPollListener() {
+                @Override
+                public void onGetLongPoll(String key, String server, String ts) {
+                    runService(key, server, ts);
+                }
+            });
+        }
     }
 
     public void fillNavHeaderViews(JSONObject userProfile) {
@@ -333,5 +374,16 @@ public class MainActivity extends AppCompatActivity
         FlurryAgent.onEndSession(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        registerReceiver(broadcastReceiver, new IntentFilter("broadCastName"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
 }

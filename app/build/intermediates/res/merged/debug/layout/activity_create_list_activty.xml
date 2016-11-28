@@ -8,7 +8,7 @@
 
 
 
-    tools:context="com.vkshoplist.sfilatov96.vkshoplist.CreateListActivty">
+    tools:context=".CreateListActivity">
 
     <include
         layout="@layout/toolbar"/>
