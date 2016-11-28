@@ -110,7 +110,11 @@ public class MainActivity extends AppCompatActivity
             if(currentFragment == null) {
                 showFragment(Fragments.FriendsFragment);
             } else {
+<<<<<<< HEAD
                 showFragment(currentFragment);
+=======
+
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
             }
             getProfileFromVk();
 

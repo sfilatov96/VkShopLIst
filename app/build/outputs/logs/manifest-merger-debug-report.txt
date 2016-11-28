@@ -1,6 +1,10 @@
 -- Merging decision tree log ---
 manifest
+<<<<<<< HEAD
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:2:1-63:12
+=======
+ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:2:1-55:12
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
 	package
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:3:5-51
 		INJECTED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml
@@ -40,7 +44,11 @@ ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/Androi
 	android:name
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:9:22-63
 application
+<<<<<<< HEAD
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:11:5-61:19
+=======
+ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:11:5-53:19
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
 MERGED from [com.android.support:appcompat-v7:24.2.0] /home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-vector-drawable:24.2.0] /home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.0/AndroidManifest.xml:23:5-20
 MERGED from [com.android.support:support-compat:24.2.0] /home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.0/AndroidManifest.xml:25:5-20
@@ -554,6 +562,7 @@ activity#com.vkshoplist.sfilatov96.vkshoplist.ExecuteListActivity
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:52:9-66
 	android:name
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:52:19-54
+<<<<<<< HEAD
 receiver#com.vkshoplist.sfilatov96.vkshoplist.NetworkChangeReceiver
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:53:9-60:20
 	android:label
@@ -570,6 +579,8 @@ action#android.net.wifi.WIFI_STATE_CHANGED
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:58:17-78
 	android:name
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:58:25-75
+=======
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
 uses-sdk
 INJECTED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:appcompat-v7:24.2.0] /home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.0/AndroidManifest.xml:21:5-23:78

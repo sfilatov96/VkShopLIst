@@ -1,7 +1,10 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
+<<<<<<< HEAD
 import android.content.BroadcastReceiver;
 import android.content.Context;
+=======
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,8 +38,11 @@ public class ExecuteListActivity extends AppCompatActivity {
     String user_id;
     boolean is_performed;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +121,11 @@ public class ExecuteListActivity extends AppCompatActivity {
         }
         List<TableShopListAuthor> list = TableShopListAuthor.find(TableShopListAuthor.class, "title = ?", shopListTitle);
         if(list != null){
+<<<<<<< HEAD
             user_id = list.get(0).uservk;
+=======
+            user_id = list.get(0).user_id;
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
             is_performed = list.get(0).is_performed;
         }
 
@@ -155,12 +165,15 @@ public class ExecuteListActivity extends AppCompatActivity {
         outState.putString("SHOPLIST_TITLE",shopListTitle);
     }
 
+<<<<<<< HEAD
     @Override
     protected void onResume() {
         super.onResume();
 
 
     }
+=======
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
 
     ItemTouchHelper.SimpleCallback simpleCallbackItemTouchHelper = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT ){
 

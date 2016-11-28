@@ -231,7 +231,11 @@ public class VkMessangerService extends Service {
             JSONArray jsonArray = new JSONArray(strArr);
             JSONObject jsobj;
             jsobj = jsonArray.getJSONObject(0);
+<<<<<<< HEAD
             List<TableShopListAuthor> ta = TableShopListAuthor.find(TableShopListAuthor.class,"title = ? and uservk = ?",jsobj.getString("list_title"),user_id);
+=======
+            List<TableShopListAuthor> ta = TableShopListAuthor.find(TableShopListAuthor.class,"title = ? and user_id",jsobj.getString("list_title"),user_id);
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
             if(ta.isEmpty()) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     jsobj = jsonArray.getJSONObject(i);

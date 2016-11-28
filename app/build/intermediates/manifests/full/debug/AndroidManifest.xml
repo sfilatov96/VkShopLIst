@@ -66,6 +66,7 @@
             android:exported="true" />
 
         <activity android:name="com.vkshoplist.sfilatov96.vkshoplist.ExecuteListActivity" />
+<<<<<<< HEAD
 
         <receiver
             android:name="com.vkshoplist.sfilatov96.vkshoplist.NetworkChangeReceiver"
@@ -76,6 +77,8 @@
             </intent-filter>
         </receiver>
 
+=======
+>>>>>>> a29044a25dca0e1faac983e2a68e6a03e26d6071
         <activity
             android:name="com.google.android.gms.common.api.GoogleApiActivity"
             android:exported="false"
