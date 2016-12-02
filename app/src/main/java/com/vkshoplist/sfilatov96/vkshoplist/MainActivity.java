@@ -49,12 +49,13 @@ public class MainActivity extends AppCompatActivity
     Tracker mTracker;
     LoginFragment loginFragment = new LoginFragment();
     FriendsFragment friendsFragment = new FriendsFragment();
-    ListsFragment listsFragment = new ListsFragment();
+    InboxListsFragment inboxListsFragment = new InboxListsFragment();
+    OutboxListsFragment outboxListsFragment = new OutboxListsFragment();
     private final String NO_INTERNET_ACCESS = "Not connected to Internet";
     private final String APP_PREFERENCES = "LONG_POLL_SERVER";
 
     enum Fragments implements Serializable{
-        LoginFragment,FriendsFragment,ListsFragment,Nothing
+        LoginFragment,FriendsFragment,InboxFragment,OutboxFragment,Nothing
     }
 
 
@@ -157,9 +158,14 @@ public class MainActivity extends AppCompatActivity
                         .remove(loginFragment)
                         .addToBackStack(null).commitAllowingStateLoss();
             }
-            if (listsFragment.isVisible()) {
+            if (inboxListsFragment.isVisible()) {
                 getSupportFragmentManager().beginTransaction()
-                        .remove(listsFragment)
+                        .remove(inboxListsFragment)
+                        .addToBackStack(null).commitAllowingStateLoss();
+            }
+            if (outboxListsFragment.isVisible()) {
+                getSupportFragmentManager().beginTransaction()
+                        .remove(outboxListsFragment)
                         .addToBackStack(null).commitAllowingStateLoss();
             }
 
@@ -170,9 +176,14 @@ public class MainActivity extends AppCompatActivity
                             .replace(R.id.friends_fragment, friendsFragment)
                             .addToBackStack(null).commitAllowingStateLoss();
                     break;
-                case ListsFragment:
+                case InboxFragment:
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.lists_fragment, listsFragment)
+                            .replace(R.id.lists_fragment, inboxListsFragment)
+                            .addToBackStack(null).commitAllowingStateLoss();
+                    break;
+                case OutboxFragment:
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.lists_fragment, outboxListsFragment)
                             .addToBackStack(null).commitAllowingStateLoss();
                     break;
                 case LoginFragment:
@@ -265,11 +276,11 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(MenuItem item) {
             // Handle navigation view item clicks here.
             int id = item.getItemId();
-            if (id == R.id.nav_my_lists) {
-                showFragment(Fragments.ListsFragment);
+            if (id == R.id.nav_my_outbox_lists) {
+                showFragment(Fragments.OutboxFragment);
                 // Handle the camera action
-            } else if (id == R.id.nav_blanks) {
-
+            } else if (id == R.id.nav_my_inbox_lists) {
+                showFragment(Fragments.InboxFragment);
             } else if (id == R.id.nav_friends) {
                 showFragment(Fragments.FriendsFragment);
             } else if (id == R.id.nav_about) {

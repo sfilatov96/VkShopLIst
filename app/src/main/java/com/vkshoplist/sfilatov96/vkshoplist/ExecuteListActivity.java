@@ -132,7 +132,7 @@ public class ExecuteListActivity extends AppCompatActivity {
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("VkShopList","is_completed");
+            jsonObject.put("VkShopList_Completed",shopListTitle);
         } catch (JSONException e) {
             e.printStackTrace();
         }

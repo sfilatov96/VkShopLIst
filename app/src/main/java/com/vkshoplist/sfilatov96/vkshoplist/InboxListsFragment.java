@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class ListsFragment extends Fragment {
+public class InboxListsFragment extends Fragment {
     ShopListsRecyclerViewAdapter adapter;
     ArrayList<TableShopListAuthor> tableShopListAuthors;
 
@@ -64,6 +64,7 @@ public class ListsFragment extends Fragment {
                     }
                 })
         );
+
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
@@ -74,7 +75,7 @@ public class ListsFragment extends Fragment {
         tableShopListAuthors = new ArrayList<TableShopListAuthor>();
         while (iterator.hasNext()) {
             TableShopListAuthor t = iterator.next();
-            if(t!=null) {
+            if(t!=null && t.is_inbox_shoplist) {
                 Log.d("tables", t.author);
                 tableShopListAuthors.add(t);
             }

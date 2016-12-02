@@ -13,7 +13,8 @@
     <string name="error_field_required">This field is required</string>
     <string name="my_friends">Мои Друзья</string>
     <string name="inbox_lists">Входящие Списки</string>
-    <string name="my_lists">Мои Списки</string>
+    <string name="my_inbox_lists">Входящие Списки</string>
+    <string name="my_outbox_lists">Исходящие Списки</string>
     <string name="my_friends_online">Онлайн</string>
     <string name="samples">Черновики</string>
     <string name="others">Другое</string>

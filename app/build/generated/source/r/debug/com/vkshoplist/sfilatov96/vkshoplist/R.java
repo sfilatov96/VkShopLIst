@@ -2964,7 +2964,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0c0066;
         public static final int action_mode_bar_stub=0x7f0c0065;
         public static final int action_mode_close_button=0x7f0c004a;
-        public static final int action_search=0x7f0c00cb;
+        public static final int action_search=0x7f0c00cc;
         public static final int activity_chooser_view_content=0x7f0c004b;
         public static final int add=0x7f0c0020;
         public static final int adjust_height=0x7f0c003a;
@@ -3057,11 +3057,12 @@ containing a value of this type.
         public static final int my_toolbar=0x7f0c00b0;
         public static final int name=0x7f0c00ac;
         public static final int name_input=0x7f0c008a;
-        public static final int nav_about=0x7f0c00c9;
-        public static final int nav_blanks=0x7f0c00c8;
+        public static final int nav_about=0x7f0c00ca;
+        public static final int nav_blanks=0x7f0c00c9;
         public static final int nav_friends=0x7f0c00c6;
-        public static final int nav_logout=0x7f0c00ca;
-        public static final int nav_my_lists=0x7f0c00c7;
+        public static final int nav_logout=0x7f0c00cb;
+        public static final int nav_my_inbox_lists=0x7f0c00c7;
+        public static final int nav_my_outbox_lists=0x7f0c00c8;
         public static final int nav_view=0x7f0c007b;
         public static final int navigation_header_container=0x7f0c0084;
         public static final int never=0x7f0c003f;
@@ -3251,12 +3252,14 @@ containing a value of this type.
         public static final int main=0x7f100001;
     }
     public static final class mipmap {
-        public static final int ic_add_white_24dp=0x7f030000;
-        public static final int ic_done_white_24dp=0x7f030001;
-        public static final int ic_launcher=0x7f030002;
-        public static final int ic_search_black_24dp=0x7f030003;
-        public static final int ic_search_white_24dp=0x7f030004;
-        public static final int ic_send_white_24dp=0x7f030005;
+        public static final int basket_ecommerce=0x7f030000;
+        public static final int ic_add_white_24dp=0x7f030001;
+        public static final int ic_done_white_24dp=0x7f030002;
+        public static final int ic_launcher=0x7f030003;
+        public static final int ic_search_black_24dp=0x7f030004;
+        public static final int ic_search_white_24dp=0x7f030005;
+        public static final int ic_send_white_24dp=0x7f030006;
+        public static final int shopping_cart=0x7f030007;
     }
     public static final class raw {
         public static final int gtm_analytics=0x7f070000;
@@ -3359,23 +3362,24 @@ containing a value of this type.
         public static final int logout=0x7f080067;
         public static final int my_friends=0x7f080068;
         public static final int my_friends_online=0x7f080069;
-        public static final int my_lists=0x7f08006a;
-        public static final int navigation_drawer_close=0x7f08006b;
-        public static final int navigation_drawer_open=0x7f08006c;
-        public static final int others=0x7f08006d;
-        public static final int permission_rationale=0x7f08006e;
-        public static final int prompt_email=0x7f08006f;
-        public static final int prompt_password=0x7f080070;
-        public static final int receiver=0x7f080071;
-        public static final int samples=0x7f080072;
+        public static final int my_inbox_lists=0x7f08006a;
+        public static final int my_outbox_lists=0x7f08006b;
+        public static final int navigation_drawer_close=0x7f08006c;
+        public static final int navigation_drawer_open=0x7f08006d;
+        public static final int others=0x7f08006e;
+        public static final int permission_rationale=0x7f08006f;
+        public static final int prompt_email=0x7f080070;
+        public static final int prompt_password=0x7f080071;
+        public static final int receiver=0x7f080072;
+        public static final int samples=0x7f080073;
         public static final int search_menu_title=0x7f080032;
-        public static final int send_button=0x7f080073;
-        public static final int send_success=0x7f080074;
-        public static final int sender=0x7f080075;
-        public static final int shoplist_allready_performed=0x7f080076;
+        public static final int send_button=0x7f080074;
+        public static final int send_success=0x7f080075;
+        public static final int sender=0x7f080076;
+        public static final int shoplist_allready_performed=0x7f080077;
         public static final int status_bar_notification_info_overflow=0x7f080033;
-        public static final int title_activity_main=0x7f080077;
-        public static final int title_shoplist=0x7f080078;
+        public static final int title_activity_main=0x7f080078;
+        public static final int title_shoplist=0x7f080079;
         public static final int vk_enter_captcha_text=0x7f080034;
         public static final int vk_name=0x7f080035;
         public static final int vk_new_message_text=0x7f080036;
@@ -3383,7 +3387,7 @@ containing a value of this type.
         public static final int vk_retry=0x7f080038;
         public static final int vk_send=0x7f080039;
         public static final int vk_share=0x7f08003a;
-        public static final int what_to_buy=0x7f080079;
+        public static final int what_to_buy=0x7f08007a;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f0a0090;
