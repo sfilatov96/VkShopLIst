@@ -54,8 +54,10 @@ public class MainActivity extends AppCompatActivity
     FriendsFragment friendsFragment = new FriendsFragment();
     InboxListsFragment inboxListsFragment = new InboxListsFragment();
     OutboxListsFragment outboxListsFragment = new OutboxListsFragment();
+
     BlanksFragment blanksFragment = new BlanksFragment();
     AboutUsFragment aboutUsFragment = new AboutUsFragment();
+
     private final String NO_INTERNET_ACCESS = "Not connected to Internet";
     private final String APP_PREFERENCES = "LONG_POLL_SERVER";
 
