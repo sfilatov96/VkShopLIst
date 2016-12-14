@@ -6,8 +6,11 @@
             android:id="@+id/nav_friends"
             android:title="@string/my_friends"/>
         <item
-            android:id="@+id/nav_my_lists"
-            android:title="@string/my_lists" />
+            android:id="@+id/nav_my_inbox_lists"
+            android:title="@string/my_inbox_lists" />
+        <item
+            android:id="@+id/nav_my_outbox_lists"
+            android:title="@string/my_outbox_lists" />
         <item
             android:id="@+id/nav_blanks"
             android:title="@string/samples" />

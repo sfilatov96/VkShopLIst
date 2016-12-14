@@ -16,12 +16,12 @@
         "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.0/res/layout/abc_action_mode_close_item_material.xml"
     },
     {
-        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/layout/fragment_lists.xml",
-        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/layout/fragment_lists.xml"
-    },
-    {
         "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/layout/abc_action_menu_item_layout.xml",
         "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.0/res/layout/abc_action_menu_item_layout.xml"
+    },
+    {
+        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/layout/fragment_lists.xml",
+        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/layout/fragment_lists.xml"
     },
     {
         "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/layout/select_dialog_multichoice_material.xml",
@@ -198,6 +198,10 @@
     {
         "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/layout/content_main.xml",
         "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/layout/content_main.xml"
+    },
+    {
+        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/layout/fragment_about_us.xml",
+        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/layout/fragment_about_us.xml"
     },
     {
         "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/layout/abc_action_bar_up_container.xml",

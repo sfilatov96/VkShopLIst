@@ -53,7 +53,9 @@ public class CreateListActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
+        ShopList = new ArrayList<>();
         getUserFromMainActivity(intent);
+
 
 
 
@@ -73,10 +75,18 @@ public class CreateListActivity extends AppCompatActivity {
                 showAddItemDialog();
             }
         });
-        ShopList = new ArrayList<>();
+
         adapter = new ShopListItemRecyclerViewAdapter(this, ShopList);
         recyclerView.setAdapter(adapter);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+
+                    }
+                })
+        );
+
 
         ImageButton sendButton = (ImageButton) findViewById(R.id.btn_send);
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -85,13 +95,17 @@ public class CreateListActivity extends AppCompatActivity {
                 sendShopListToFriend(v);
             }
         });
-
-        if( savedInstanceState == null ) {
-            showTitleListDialog();
-        } else {
+        if(savedInstanceState != null) {
             shopListTitle = savedInstanceState.getString("shopListTitle");
-            ((TextView)findViewById(R.id.listTitle)).setText(shopListTitle);
+
+        }
+        if(shopListTitle != null) {
+
+            ((TextView) findViewById(R.id.listTitle)).setText(shopListTitle);
             getCurrentShopList();
+
+        } else {
+            showTitleListDialog();
         }
 
 
@@ -113,25 +127,37 @@ public class CreateListActivity extends AppCompatActivity {
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current game state
         savedInstanceState.putString("shopListTitle", shopListTitle);
         saveListToDataBase(true);
 
-        // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    void saveListToDataBase(boolean is_blank) {
-        for(ShopListItem s:ShopList){
-            List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class,"list_title = ? and name = ?",s.listTitle,s.name);
-            if(item.isEmpty()) {
-                TableShopListClass tableShopListClass = new TableShopListClass(s);
-                tableShopListClass.save();
-            }
+    boolean saveListToDataBase(boolean is_blank) {
+        if(!ShopList.isEmpty()) {
+            for (ShopListItem s : ShopList) {
+                List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class, "list_title = ? and name = ?", s.listTitle, s.name);
+                if (item.isEmpty()) {
+                    TableShopListClass tableShopListClass = new TableShopListClass(s);
+                    tableShopListClass.save();
+                }
 
+            }
+            List<TableShopListAuthor> is_exist = TableShopListAuthor.find(TableShopListAuthor.class,"title = ?",shopListTitle);
+            if(is_exist.isEmpty()) {
+                TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(userName, ShopList.get(0).listTitle, false, is_blank, userId);
+                tableShopListAuthor.save();
+            } else {
+                is_exist.get(0).is_blank = false;
+                is_exist.get(0).save();
+            }
+            return true;
+        } else {
+            Toast.makeText(this,R.string.list_empty,Toast.LENGTH_LONG).show();
+            return false;
         }
-        TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(userName, ShopList.get(0).listTitle,false,is_blank,userId);
-        tableShopListAuthor.save();
+
+
     }
 
 
@@ -144,6 +170,12 @@ public class CreateListActivity extends AppCompatActivity {
                 .load(userAvatar)
                 .transform(new CircularTransformation(80))
                 .into(toolbarPhoto);
+        if(intent.getStringExtra("shopListTitle") != null) {
+            shopListTitle = intent.getStringExtra("shopListTitle");
+            Log.d("shoplisttitle",shopListTitle);
+            getCurrentShopList();
+        }
+
     }
 
     public void emptyFields() {
@@ -160,6 +192,7 @@ public class CreateListActivity extends AppCompatActivity {
     public void showAddItemDialog() {
         DialogFragment newFragment = new AddItemDialog();
         newFragment.show(getFragmentManager(), "dialog");
+
         newFragment.setCancelable(false);
         newFragment.setShowsDialog(true);
     }
@@ -167,11 +200,13 @@ public class CreateListActivity extends AppCompatActivity {
     public void GetShopListTitle(String title) {
         shopListTitle = title+" - ("+getCurrentDate()+")";
         ((TextView)findViewById(R.id.listTitle)).setText(shopListTitle);
+        getCurrentShopList();
     }
 
     public void FillShopList(String name, String quantity, String value) {
 
         ShopList.add(new ShopListItem(name, quantity, value, shopListTitle));
+        adapter.notifyDataSetChanged();
 
 
     }
@@ -186,6 +221,9 @@ public class CreateListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if(saveListToDataBase(true)) {
+            Toast.makeText(this, R.string.saved_as_blank, Toast.LENGTH_LONG).show();
+        }
         this.finish();
     }
     ItemTouchHelper.SimpleCallback simpleCallbackItemTouchHelper = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT ){
@@ -252,6 +290,7 @@ public class CreateListActivity extends AppCompatActivity {
                 @Override
                 public void onError() {
                     saveListToDataBase(true);
+                    CreateListActivity.this.finish();
                     Toast.makeText(CreateListActivity.this, R.string.internet_access_error, Toast.LENGTH_LONG).show();
                 }
             });

@@ -1,6 +1,8 @@
 package com.vkshoplist.sfilatov96.vkshoplist;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,14 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 
-public class ListsFragment extends Fragment {
+public class OutboxListsFragment extends Fragment {
     ShopListsRecyclerViewAdapter adapter;
+
     ArrayList<TableShopListAuthor> tableShopListAuthors;
 
     View rootView;
@@ -35,8 +37,10 @@ public class ListsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+        getActivity().setTitle(R.string.my_outbox_lists);
         rootView = inflater.inflate(R.layout.fragment_lists, container, false);
         prepareShopListsList();
+
         return rootView;
 
     }
@@ -74,7 +78,7 @@ public class ListsFragment extends Fragment {
         tableShopListAuthors = new ArrayList<TableShopListAuthor>();
         while (iterator.hasNext()) {
             TableShopListAuthor t = iterator.next();
-            if(t!=null) {
+            if(t!=null &&  (!t.is_inbox_shoplist) && (!t.is_blank)) {
                 Log.d("tables", t.author);
                 tableShopListAuthors.add(t);
             }

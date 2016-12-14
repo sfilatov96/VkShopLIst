@@ -1,8 +1,6 @@
 -- Merging decision tree log ---
 manifest
-
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:2:1-63:12
-
 	package
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:3:5-51
 		INJECTED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml
@@ -484,7 +482,7 @@ MERGED from [com.android.support:support-compat:24.2.0] /home/sfilatov96/Android
 	android:allowBackup
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:13:9-35
 	android:icon
-		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:14:9-43
+		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:14:9-45
 	android:theme
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:17:9-40
 	android:name
@@ -556,7 +554,6 @@ activity#com.vkshoplist.sfilatov96.vkshoplist.ExecuteListActivity
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:52:9-66
 	android:name
 		ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:52:19-54
-
 receiver#com.vkshoplist.sfilatov96.vkshoplist.NetworkChangeReceiver
 ADDED from /home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/AndroidManifest.xml:53:9-60:20
 	android:label

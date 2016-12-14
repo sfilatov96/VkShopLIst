@@ -25,6 +25,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle(R.string.login_through_vk);
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         Button loginButton = (Button)rootView.findViewById(R.id.login_button);
         loginButton.setOnClickListener(new View.OnClickListener() {

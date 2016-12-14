@@ -2,6 +2,7 @@ package com.vkshoplist.sfilatov96.vkshoplist;
 
 
 
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,6 +35,7 @@ import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
 
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,12 +52,15 @@ public class MainActivity extends AppCompatActivity
     Tracker mTracker;
     LoginFragment loginFragment = new LoginFragment();
     FriendsFragment friendsFragment = new FriendsFragment();
-    ListsFragment listsFragment = new ListsFragment();
+    InboxListsFragment inboxListsFragment = new InboxListsFragment();
+    OutboxListsFragment outboxListsFragment = new OutboxListsFragment();
+    BlanksFragment blanksFragment = new BlanksFragment();
+    AboutUsFragment aboutUsFragment = new AboutUsFragment();
     private final String NO_INTERNET_ACCESS = "Not connected to Internet";
     private final String APP_PREFERENCES = "LONG_POLL_SERVER";
 
     enum Fragments implements Serializable{
-        LoginFragment,FriendsFragment,ListsFragment,Nothing
+        LoginFragment,FriendsFragment,InboxFragment,OutboxFragment,BlanksFragment,Nothing,AboutUsFragment
     }
 
 
@@ -147,43 +153,76 @@ public class MainActivity extends AppCompatActivity
         }
 
         private void showFragment(Fragments fragments) {
-            if (friendsFragment.isVisible()) {
-                getSupportFragmentManager().beginTransaction()
-                        .remove(friendsFragment)
-                        .addToBackStack(null).commitAllowingStateLoss();
-            }
-            if (loginFragment.isVisible()) {
-                getSupportFragmentManager().beginTransaction()
-                        .remove(loginFragment)
-                        .addToBackStack(null).commitAllowingStateLoss();
-            }
-            if (listsFragment.isVisible()) {
-                getSupportFragmentManager().beginTransaction()
-                        .remove(listsFragment)
-                        .addToBackStack(null).commitAllowingStateLoss();
-            }
+            if (VKSdk.isLoggedIn() || fragments == Fragments.LoginFragment || fragments == Fragments.AboutUsFragment) {
+                if (friendsFragment.isVisible()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(friendsFragment).
+                            addToBackStack(null).commitAllowingStateLoss();
+                }
+                if (loginFragment.isVisible()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(loginFragment)
+                            .addToBackStack(null).commitAllowingStateLoss();
+                }
+                if (inboxListsFragment.isVisible()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(inboxListsFragment).addToBackStack(null).commitAllowingStateLoss();
+                }
+                if (outboxListsFragment.isVisible()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(outboxListsFragment).addToBackStack(null)
+                            .commitAllowingStateLoss();
+                }
+                if (blanksFragment.isVisible()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(blanksFragment).addToBackStack(null)
+                            .commitAllowingStateLoss();
+                }
+                if (aboutUsFragment.isVisible()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(aboutUsFragment).addToBackStack(null)
+                            .commitAllowingStateLoss();
+                }
 
-            currentFragment = fragments;
-            switch (fragments) {
-                case FriendsFragment:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.friends_fragment, friendsFragment)
-                            .addToBackStack(null).commitAllowingStateLoss();
-                    break;
-                case ListsFragment:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.lists_fragment, listsFragment)
-                            .addToBackStack(null).commitAllowingStateLoss();
-                    break;
-                case LoginFragment:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.login_fragment, loginFragment)
-                            .addToBackStack(null).commitAllowingStateLoss();
-                    break;
-                default:
-                    Log.d("nothing_fragments", "nothing_fragments");
-                    break;
 
+                currentFragment = fragments;
+                switch (fragments) {
+                    case FriendsFragment:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.friends_fragment, friendsFragment)
+                                .commitAllowingStateLoss();
+                        break;
+                    case InboxFragment:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.lists_fragment, inboxListsFragment)
+                                .commitAllowingStateLoss();
+                        break;
+                    case OutboxFragment:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.lists_fragment, outboxListsFragment)
+                                .commitAllowingStateLoss();
+                        break;
+                    case LoginFragment:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.login_fragment, loginFragment)
+                                .commitAllowingStateLoss();
+                        break;
+                    case BlanksFragment:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.lists_fragment, blanksFragment)
+                                .commitAllowingStateLoss();
+                        break;
+                    case AboutUsFragment:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.about_us_fragment, aboutUsFragment)
+                                .commitAllowingStateLoss();
+                    default:
+                        Log.d("nothing_fragments", "nothing_fragments");
+                        break;
+
+                }
+            } else {
+                Toast.makeText(this,R.string.not_logged_in,Toast.LENGTH_LONG).show();
             }
         }
 
@@ -206,25 +245,24 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-
             getMenuInflater().inflate(R.menu.main, menu);
-        /*MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        if(null!=searchManager ) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        }*/
 
             MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+            SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+            mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
             mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
 
+
             //focus the SearchView
             if (mSearchString != null && !mSearchString.isEmpty()) {
+
                 searchMenuItem.expandActionView();
                 mSearchView.setQuery(mSearchString, true);
+                mSearchView.setIconified(false);
+                mSearchView.requestFocus();
+
 
             }
 
@@ -232,7 +270,8 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     friendsFragment.adapter.filter(query);
-                    return true;
+
+                    return false;
                 }
 
                 @Override
@@ -241,6 +280,7 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 }
             });
+
 
 
             return super.onCreateOptionsMenu(menu);
@@ -265,15 +305,17 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(MenuItem item) {
             // Handle navigation view item clicks here.
             int id = item.getItemId();
-            if (id == R.id.nav_my_lists) {
-                showFragment(Fragments.ListsFragment);
+            if (id == R.id.nav_my_outbox_lists) {
+                showFragment(Fragments.OutboxFragment);
                 // Handle the camera action
-            } else if (id == R.id.nav_blanks) {
-
+            } else if (id == R.id.nav_my_inbox_lists) {
+                showFragment(Fragments.InboxFragment);
             } else if (id == R.id.nav_friends) {
                 showFragment(Fragments.FriendsFragment);
+            } else if (id == R.id.nav_blanks) {
+                showFragment(Fragments.BlanksFragment);
             } else if (id == R.id.nav_about) {
-                showFragment(Fragments.Nothing);
+                showFragment(Fragments.AboutUsFragment);
             } else if (id == R.id.nav_logout) {
                 if (VKSdk.isLoggedIn()) {
                     VKSdk.logout();

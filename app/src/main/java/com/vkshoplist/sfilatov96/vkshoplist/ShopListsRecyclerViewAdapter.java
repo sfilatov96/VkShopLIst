@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 /**
  * Created by sfilatov96 on 20.11.16.
@@ -92,5 +93,7 @@ public class ShopListsRecyclerViewAdapter extends RecyclerView.Adapter<ShopLists
         return ta;
 
     }
+
+
 
 }

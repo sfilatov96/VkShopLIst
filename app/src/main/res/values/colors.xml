@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#00695C</color>
-    <color name="colorPrimaryDark">#004D40</color>
+    <color name="colorPrimaryDark">#004d40</color>
     <color name="colorAccent">#FFFFBB33</color>
     <color name="online">#00695C</color>
     <color name="is_perform">#000000</color>

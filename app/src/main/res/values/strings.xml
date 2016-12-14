@@ -13,7 +13,8 @@
     <string name="error_field_required">This field is required</string>
     <string name="my_friends">Мои Друзья</string>
     <string name="inbox_lists">Входящие Списки</string>
-    <string name="my_lists">Мои Списки</string>
+    <string name="my_inbox_lists">Входящие Списки</string>
+    <string name="my_outbox_lists">Исходящие Списки</string>
     <string name="my_friends_online">Онлайн</string>
     <string name="samples">Черновики</string>
     <string name="others">Другое</string>
@@ -47,12 +48,14 @@
     <string name="list_empty">Список пуст, отправлять нечего!</string>
     <string name="internet_access_error">Ошибка подключения к интернет, пожалуйста, попробуйте ещё раз отправить</string>
     <string name="send_success">Список успешно отправлен!</string>
-
+    <string name="saved_as_blank">Сохранено в черновики!</string>
     <string name="login_through_vk">Войти через Vk</string>
     <string name="is_outbox_shoplist">Этот список является исходящим</string>
     <string name="shoplist_allready_performed">Этот список уже выполнен</string>
     <string name="sender">Отправитель: </string>
     <string name="receiver">Получатель: </string>
     <string name="completed">Завершено</string>
+    <string name="about_us_text">Приложение разработали студенты технопарка@Mail.ru Степан Филатов и Ксения Сначёва </string>
+    <string name="not_logged_in">Вы не авторизованы!</string>
 
 </resources>

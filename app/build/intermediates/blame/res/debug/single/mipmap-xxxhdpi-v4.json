@@ -12,6 +12,14 @@
         "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/mipmap-xxxhdpi/ic_add_white_24dp.png"
     },
     {
+        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi-v4/basket_ecommerce.png",
+        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/mipmap-xxxhdpi/basket_ecommerce.png"
+    },
+    {
+        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi-v4/shopping_cart.png",
+        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/mipmap-xxxhdpi/shopping_cart.png"
+    },
+    {
         "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi-v4/ic_send_white_24dp.png",
         "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/mipmap-xxxhdpi/ic_send_white_24dp.png"
     },

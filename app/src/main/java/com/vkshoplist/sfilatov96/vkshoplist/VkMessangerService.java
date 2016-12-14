@@ -113,7 +113,7 @@ public class VkMessangerService extends Service {
     }
     private void findShopListInJsonArray(JSONArray jsonArray){
         Log.d("jsonarray",jsonArray.toString());
-        if(jsonArray.toString().contains("VkShopList_Open")) {
+        if(jsonArray.toString().contains("VkShopList_Open") || jsonArray.toString().contains("VkShopList_Completed")) {
             refreshLongPollServer();
             ArrayList<JSONArray> list = new ArrayList<JSONArray>();
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -128,7 +128,7 @@ public class VkMessangerService extends Service {
     }
     private void workWithList(ArrayList<JSONArray> list){
         for(JSONArray Ja: list){
-            if(Ja.toString().contains("VkShopList_Open")){
+            if(Ja.toString().contains("VkShopList_Open")|| Ja.toString().contains("VkShopList_Completed")){
                 try {
                     String ShopList = Ja.getString(MESSAGE).replace("&quot;","\"");
                     final JSONObject jsonShopList = new JSONObject(ShopList);
@@ -181,7 +181,7 @@ public class VkMessangerService extends Service {
 
 
     }
-    public void runNotification(String firstname, String lastname){
+    public void runNotification(String firstname, String lastname, boolean is_completed, String shopListTitle){
         Context context = getApplicationContext();
         Intent notificationIntent = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context,
@@ -189,10 +189,15 @@ public class VkMessangerService extends Service {
                 PendingIntent.FLAG_CANCEL_CURRENT);
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentIntent(contentIntent)
-                .setSmallIcon(R.drawable.common_ic_googleplayservices)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setAutoCancel(true)
-                .setContentTitle("VkShopList")
-                .setContentText(String.format("%s %s отправил(а) вам список!",firstname,lastname));
+                .setContentTitle("VkShopList");
+        if (!is_completed) {
+            builder.setContentText(String.format("%s %s отправил(а) вам список %s!",firstname,lastname, shopListTitle));
+        } else {
+            builder.setContentText(String.format("%s %s завершил(а) список %s!",firstname,lastname, shopListTitle));
+        }
+
 
         Notification notification = builder.build();
 
@@ -222,42 +227,54 @@ public class VkMessangerService extends Service {
 
 
     private void saveInDataBase(JSONObject jsonObject, String firstname, String lastname, String user_id){
-        Date date = new Date();
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        TableShopListClass tableShopListClass;
-        try {
-            String strArr = jsonObject.getString("VkShopList_Open");
-            JSONArray jsonArray = new JSONArray(strArr);
-            JSONObject jsobj;
-            jsobj = jsonArray.getJSONObject(0);
+        if(jsonObject.toString().contains("VkShopList_Completed")) {
+            try {
+                List<TableShopListAuthor> ta = TableShopListAuthor.find(TableShopListAuthor.class, "title = ? and uservk = ?", jsonObject.getString("VkShopList_Completed"), user_id);
+                if(ta != null) {
+                    ta.get(0).is_performed = true;
+                    ta.get(0).save();
+                }
+                runNotification(firstname, lastname, true, jsonObject.getString("VkShopList_Completed"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Date date = new Date();
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+            TableShopListClass tableShopListClass;
+            try {
+                String strArr = jsonObject.getString("VkShopList_Open");
+                JSONArray jsonArray = new JSONArray(strArr);
+                JSONObject jsobj;
+                jsobj = jsonArray.getJSONObject(0);
 
-            List<TableShopListAuthor> ta = TableShopListAuthor.find(TableShopListAuthor.class,"title = ? and uservk = ?",jsobj.getString("list_title"),user_id);
+                List<TableShopListAuthor> ta = TableShopListAuthor.find(TableShopListAuthor.class, "title = ? and uservk = ?", jsobj.getString("list_title"), user_id);
 
-            if(ta.isEmpty()) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    jsobj = jsonArray.getJSONObject(i);
-                    ShopListItem shopListItem = new ShopListItem(jsobj.getString("name"), jsobj.getString("quantity"),
-                            jsobj.getString("value"), jsobj.getString("list_title"));
+                if (ta.isEmpty()) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        jsobj = jsonArray.getJSONObject(i);
+                        ShopListItem shopListItem = new ShopListItem(jsobj.getString("name"), jsobj.getString("quantity"),
+                                jsobj.getString("value"), jsobj.getString("list_title"));
 
-                    Log.d("shoplistitem", shopListItem.listTitle + ' ' + shopListItem.name + ' ' + shopListItem.value + ' ' + shopListItem.quantity);
-                    Log.d("shoplistitem", jsonArray.getJSONObject(0).getString("list_title"));
-                    tableShopListClass = new TableShopListClass(shopListItem);
-                    tableShopListClass.save();
+                        Log.d("shoplistitem", shopListItem.listTitle + ' ' + shopListItem.name + ' ' + shopListItem.value + ' ' + shopListItem.quantity);
+                        Log.d("shoplistitem", jsonArray.getJSONObject(0).getString("list_title"));
+                        tableShopListClass = new TableShopListClass(shopListItem);
+                        tableShopListClass.save();
+                    }
+
+
+                    TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname + ' ' + lastname, jsobj.getString("list_title"), true, false, user_id);
+                    tableShopListAuthor.save();
+
+                    runNotification(firstname, lastname, false, jsobj.getString("list_title"));
                 }
 
 
-                TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname + ' ' + lastname, jsobj.getString("list_title"), true, false, user_id);
-                tableShopListAuthor.save();
-
-                runNotification(firstname, lastname);
+            } catch (JSONException e) {
+                Log.d("db", "except");
+                e.printStackTrace();
             }
-
-
-
-        } catch (JSONException e) {
-            Log.d("db","except");
-            e.printStackTrace();
         }
 
     }

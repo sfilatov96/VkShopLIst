@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="com_vk_sdk_AppId">5665521</integer>
+    <string name="about">About</string>
+    <string name="about_us_text">Application was developed by technopark@Mail.ru students Stepan Filatov and Ksenia Snacheva </string>
+    <string name="action_settings">Settings</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="add">Add</string>
+    <string name="app_name">VkShopList</string>
+    <string name="auth_error">Authorization error</string>
+    <string name="auth_success">You are success authorized</string>
+    <string name="blank">Empty list</string>
+    <string name="cancel">Cancel</string>
+    <string name="completed">Completed</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="fields_empty">Some fields are empty </string>
+    <string name="find_friend">Find friends</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="how_many_to_buy">How many?</string>
+    <string name="inbox_lists">Inbox shoplists</string>
+    <string name="internet_access_error">Internet connection error, please, try send it again</string>
+    <string name="is_outbox_shoplist">This Shoplist is outgoing </string>
+    <string name="list_empty">ShopList is empty, nothing to send!</string>
+    <string name="login_through_vk">Login through Vk</string>
+    <string name="logout">Logout</string>
+    <string name="my_friends">My Friends</string>
+    <string name="my_friends_online">Online</string>
+    <string name="my_inbox_lists">Inbox shoplists</string>
+    <string name="my_outbox_lists">Outgoing shoplists</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="not_logged_in">You are not logged in</string>
+    <string name="others">Other</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="receiver">Receiver: </string>
+    <string name="samples">Drafts</string>
+    <string name="saved_as_blank">Saved like drafts!</string>
+    <string name="send_button">Send</string>
+    <string name="send_success">Shoplist sended success!</string>
+    <string name="sender">Sender: </string>
+    <string name="shoplist_allready_performed">This ShopList is already completed</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_shoplist">Shoplist title</string>
+    <string name="what_to_buy">What to buy?</string>
+</resources>

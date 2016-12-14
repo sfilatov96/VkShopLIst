@@ -49,6 +49,7 @@ import java.util.ArrayList;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            getActivity().setTitle(R.string.my_friends);
             rootView = inflater.inflate(R.layout.fragment_friends, container, false);
             prepareFriendsAndProfile();
 
@@ -62,8 +63,13 @@ import java.util.ArrayList;
         // TODO: Rename method, update argument and hook method into UI event
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        adapter.notifyDataSetChanged();
+    }
 
-        private void prepareFriendsAndProfile(){
+    private void prepareFriendsAndProfile(){
 
             recyclerView = (RecyclerView)rootView.findViewById(R.id.rv);
             LinearLayoutManager llm = new LinearLayoutManager(getActivity());

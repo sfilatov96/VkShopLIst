@@ -79,6 +79,8 @@ public class ExecuteListActivity extends AppCompatActivity {
                     Toast.makeText(ExecuteListActivity.this,R.string.shoplist_allready_performed,Toast.LENGTH_LONG).show();
                 } else {
                     sendCompletion();
+                    finish();
+
                 }
             }
         });
@@ -123,16 +125,12 @@ public class ExecuteListActivity extends AppCompatActivity {
 
     }
     private void sendCompletion(){
-        List<TableShopListAuthor> list = TableShopListAuthor.find(TableShopListAuthor.class, "title = ?", shopListTitle);
-        if(list != null){
-            list.get(0).is_performed = true;
-            list.get(0).save();
-        }
+
 
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("VkShopList","is_completed");
+            jsonObject.put("VkShopList_Completed",shopListTitle);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -140,12 +138,17 @@ public class ExecuteListActivity extends AppCompatActivity {
         vkHelper.setMessageSendListener(new VkHelper.MessageSendListener() {
             @Override
             public void onComplete() {
-
+                List<TableShopListAuthor> list = TableShopListAuthor.find(TableShopListAuthor.class, "title = ?", shopListTitle);
+                if(list != null){
+                    list.get(0).is_performed = true;
+                    list.get(0).save();
+                }
+                Toast.makeText(ExecuteListActivity.this,R.string.completed,Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError() {
-
+                Toast.makeText(ExecuteListActivity.this,R.string.internet_access_error,Toast.LENGTH_LONG).show();
             }
         });
 
