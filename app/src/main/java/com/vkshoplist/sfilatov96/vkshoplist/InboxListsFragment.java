@@ -3,6 +3,7 @@ package com.vkshoplist.sfilatov96.vkshoplist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -21,7 +22,7 @@ import java.util.List;
 public class InboxListsFragment extends Fragment {
     ShopListsRecyclerViewAdapter adapter;
     ArrayList<TableShopListAuthor> tableShopListAuthors;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     View rootView;
 
     @Override
@@ -36,7 +37,21 @@ public class InboxListsFragment extends Fragment {
         // Inflate the layout for this fragment
         getActivity().setTitle(R.string.inbox_lists);
         rootView = inflater.inflate(R.layout.fragment_lists, container, false);
-        prepareShopListsList();
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_friends_container);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                prepareShopListsList();
+            }
+        });
+
+
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        //prepareShopListsList();
         return rootView;
 
     }
@@ -54,16 +69,14 @@ public class InboxListsFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         TableShopListAuthor shopListAuthor = adapter.getListByPosition(position);
-                        if(shopListAuthor.is_inbox_shoplist && !shopListAuthor.is_performed) {
+                        if(!shopListAuthor.is_performed) {
                             Intent intent = new Intent(getActivity(), ExecuteListActivity.class);
                             intent.putExtra("SHOPLIST_TITLE",shopListAuthor.title);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
+
                         } else {
-                            if(!shopListAuthor.is_inbox_shoplist) {
-                                Toast.makeText(getActivity(), R.string.is_outbox_shoplist, Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), R.string.shoplist_allready_performed, Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(getActivity(), R.string.shoplist_allready_performed, Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -73,12 +86,14 @@ public class InboxListsFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
+
     }
 
     @Override
     public void onResume() {
-        adapter.notifyDataSetChanged();
         super.onResume();
+        prepareShopListsList();
+
     }
 
     private void fillShopListsListItem(){
@@ -87,7 +102,6 @@ public class InboxListsFragment extends Fragment {
         while (iterator.hasNext()) {
             TableShopListAuthor t = iterator.next();
             if(t!=null && t.is_inbox_shoplist) {
-                Log.d("tables", t.author);
                 tableShopListAuthors.add(t);
             }
 
@@ -108,12 +122,11 @@ public class InboxListsFragment extends Fragment {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Log.d("dada","remove item in " + tableShopListAuthors.get(position).title + " ShopList: { name: " + tableShopListAuthors.get(position).author + "}" );
 
 
-            List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class, "list_title = ?", tableShopListAuthors.get(position).title);
+            TableShopListClass.deleteAll(TableShopListClass.class, "list_title = ?", tableShopListAuthors.get(position).title);
 
-            item.clear();
+
 
             List<TableShopListAuthor> author = TableShopListAuthor.find(TableShopListAuthor.class, "title = ?", tableShopListAuthors.get(position).title);
             if(!author.isEmpty()) {

@@ -59,7 +59,6 @@ public class VkMessangerService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
-        Log.d("service","bind");
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -90,7 +89,6 @@ public class VkMessangerService extends Service {
                         } catch (InterruptedException e) {
                             break;
                         }
-                        Log.d("service",key+ ' ' + server + ' ' + ts);
                         getJsonFromVk();
                         if (js != null) {
                             try {
@@ -112,7 +110,6 @@ public class VkMessangerService extends Service {
         return Service.START_STICKY;
     }
     private void findShopListInJsonArray(JSONArray jsonArray){
-        Log.d("jsonarray",jsonArray.toString());
         if(jsonArray.toString().contains("VkShopList_Open") || jsonArray.toString().contains("VkShopList_Completed")) {
             refreshLongPollServer();
             ArrayList<JSONArray> list = new ArrayList<JSONArray>();
@@ -142,7 +139,6 @@ public class VkMessangerService extends Service {
 
                         @Override
                         public void onAppearUserProfile(JSONObject jsonObject) {
-                            Log.d("user_appear",jsonObject.toString());
                             try {
 
                                 saveInDataBase(jsonShopList,jsonObject.getString("first_name"),jsonObject.getString("last_name"),jsonObject.getString("id"));
@@ -231,8 +227,11 @@ public class VkMessangerService extends Service {
             try {
                 List<TableShopListAuthor> ta = TableShopListAuthor.find(TableShopListAuthor.class, "title = ? and uservk = ?", jsonObject.getString("VkShopList_Completed"), user_id);
                 if(ta != null) {
-                    ta.get(0).is_performed = true;
-                    ta.get(0).save();
+                    if(!ta.get(0).is_performed) {
+                        ta.get(0).is_performed = true;
+                        ta.get(0).save();
+                        runNotification(firstname, lastname, true, jsonObject.getString("VkShopList_Completed"));
+                    }
                 }
                 runNotification(firstname, lastname, true, jsonObject.getString("VkShopList_Completed"));
             } catch (JSONException e) {
@@ -257,8 +256,6 @@ public class VkMessangerService extends Service {
                         ShopListItem shopListItem = new ShopListItem(jsobj.getString("name"), jsobj.getString("quantity"),
                                 jsobj.getString("value"), jsobj.getString("list_title"));
 
-                        Log.d("shoplistitem", shopListItem.listTitle + ' ' + shopListItem.name + ' ' + shopListItem.value + ' ' + shopListItem.quantity);
-                        Log.d("shoplistitem", jsonArray.getJSONObject(0).getString("list_title"));
                         tableShopListClass = new TableShopListClass(shopListItem);
                         tableShopListClass.save();
                     }
@@ -272,7 +269,6 @@ public class VkMessangerService extends Service {
 
 
             } catch (JSONException e) {
-                Log.d("db", "except");
                 e.printStackTrace();
             }
         }

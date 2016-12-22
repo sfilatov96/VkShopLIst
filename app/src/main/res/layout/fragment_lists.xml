@@ -3,11 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.vkshoplist.sfilatov96.vkshoplist.OutboxListsFragment">
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_friends_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:id="@+id/lists_rv"
-        />
+        android:layout_marginTop="50dp">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:id="@+id/lists_rv"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

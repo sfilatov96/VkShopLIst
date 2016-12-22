@@ -46,7 +46,7 @@ public class VkHelper {
 
             @Override
             public void onError(VKError error) {
-                Toast.makeText(context, "oshibka", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.internet_access_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -117,14 +117,12 @@ public class VkHelper {
                     Log.d("screen_name",screen_name);
                     getProfileById(screen_name);
 
-
-                //fillNavHeaderViews(userProfile);
             }
 
             @Override
             public void onError(VKError error) {
                 super.onError(error);
-                Log.d("profile", error.toString());
+                Toast.makeText(context, R.string.internet_access_error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -142,7 +140,7 @@ public class VkHelper {
 
             @Override
             public void onError(VKError error) {
-                Toast.makeText(context, "oshibka", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.internet_access_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override

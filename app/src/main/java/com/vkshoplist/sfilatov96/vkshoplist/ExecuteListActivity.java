@@ -35,6 +35,7 @@ public class ExecuteListActivity extends AppCompatActivity {
     ShopListItemRecyclerViewAdapter adapter;
     VkHelper vkHelper;
     String user_id;
+    boolean is_inbox;
     boolean is_performed;
 
 
@@ -67,23 +68,31 @@ public class ExecuteListActivity extends AppCompatActivity {
 
         adapter = new ShopListItemRecyclerViewAdapter(this, ShopList);
         recyclerView.setAdapter(adapter);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        if(is_inbox) {
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        }
+        if(is_inbox) {
+            ImageButton sendButton = (ImageButton) findViewById(R.id.btn_send);
+            Picasso.with(this).load(R.mipmap.ic_done_white_24dp).into(sendButton);
 
-        ImageButton sendButton = (ImageButton) findViewById(R.id.btn_send);
-        Picasso.with(this).load(R.mipmap.ic_done_white_24dp).into(sendButton);
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(is_performed){
-                    Toast.makeText(ExecuteListActivity.this,R.string.shoplist_allready_performed,Toast.LENGTH_LONG).show();
-                } else {
-                    sendCompletion();
-                    finish();
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (is_performed) {
+                        Toast.makeText(ExecuteListActivity.this, R.string.shoplist_allready_performed, Toast.LENGTH_LONG).show();
+                    } else {
+                        sendCompletion();
+                        finish();
 
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            ImageButton sendButton = (ImageButton) findViewById(R.id.btn_send);
+            sendButton.setAlpha(0);
+            sendButton.setClickable(false);
+        }
 
         vkHelper.getProfileById(user_id);
         vkHelper.setListener(new VkHelper.Listener() {
@@ -121,36 +130,41 @@ public class ExecuteListActivity extends AppCompatActivity {
             user_id = list.get(0).uservk;
 
             is_performed = list.get(0).is_performed;
+
+            is_inbox = list.get(0).is_inbox_shoplist;
         }
 
     }
     private void sendCompletion(){
 
+        if(is_inbox) {
 
-
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("VkShopList_Completed",shopListTitle);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        vkHelper.sendShopListByFriendsID(user_id,jsonObject);
-        vkHelper.setMessageSendListener(new VkHelper.MessageSendListener() {
-            @Override
-            public void onComplete() {
-                List<TableShopListAuthor> list = TableShopListAuthor.find(TableShopListAuthor.class, "title = ?", shopListTitle);
-                if(list != null){
-                    list.get(0).is_performed = true;
-                    list.get(0).save();
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("VkShopList_Completed", shopListTitle);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            vkHelper.sendShopListByFriendsID(user_id, jsonObject);
+            vkHelper.setMessageSendListener(new VkHelper.MessageSendListener() {
+                @Override
+                public void onComplete() {
+                    List<TableShopListAuthor> list = TableShopListAuthor.find(TableShopListAuthor.class, "title = ?", shopListTitle);
+                    if (list != null) {
+                        list.get(0).is_performed = true;
+                        list.get(0).save();
+                    }
+                    Toast.makeText(ExecuteListActivity.this, R.string.completed, Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(ExecuteListActivity.this,R.string.completed,Toast.LENGTH_LONG).show();
-            }
 
-            @Override
-            public void onError() {
-                Toast.makeText(ExecuteListActivity.this,R.string.internet_access_error,Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onError() {
+                    Toast.makeText(ExecuteListActivity.this, R.string.internet_access_error, Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(this,R.string.is_outbox_shoplist,Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -181,7 +195,6 @@ public class ExecuteListActivity extends AppCompatActivity {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Log.d("dada","remove item in " + ShopList.get(position).listTitle + " ShopList: { name: " + ShopList.get(position).name + "}" );
 
 
             List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class, "name = ? and list_title = ?", ShopList.get(position).name, ShopList.get(position).listTitle);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,6 +27,7 @@ public class BlanksFragment extends Fragment {
     ShopListsRecyclerViewAdapter adapter;
 
     ArrayList<TableShopListAuthor> tableShopListAuthors;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     View rootView;
 
@@ -42,7 +44,20 @@ public class BlanksFragment extends Fragment {
 
         getActivity().setTitle(R.string.samples);
         rootView = inflater.inflate(R.layout.fragment_lists, container, false);
-        prepareShopListsList();
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_friends_container);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                prepareShopListsList();
+            }
+        });
+
+
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         return rootView;
 
@@ -61,29 +76,14 @@ public class BlanksFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         final TableShopListAuthor shopListAuthor = adapter.getListByPosition(position);
-                        VkHelper vkHelper = new VkHelper(getActivity());
-                        vkHelper.getProfileById(shopListAuthor.uservk);
-                        vkHelper.setListener(new VkHelper.Listener() {
-                            @Override
-                            public void onAppearFriends(ArrayList<Person> persons) {
 
-                            }
 
-                            @Override
-                            public void onAppearUserProfile(JSONObject jsonObject) {
-                                Intent intent = new Intent(getActivity(), CreateListActivity.class);
-                                intent.putExtra("id",shopListAuthor.uservk);
-                                try {
-                                    intent.putExtra("name",jsonObject.getString("first_name")+' '+jsonObject.getString("last_name"));
-                                    intent.putExtra("avatar",jsonObject.getString("photo_200"));
-                                    intent.putExtra("shopListTitle",shopListAuthor.title);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                        Intent intent = new Intent(getActivity(), CreateListActivity.class);
+                        intent.putExtra("id",shopListAuthor.uservk);
+                        intent.putExtra("shopListTitle",shopListAuthor.title);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                                startActivity(intent);
-                            }
-                        });
+                        startActivity(intent);
 
 
                     }
@@ -100,7 +100,6 @@ public class BlanksFragment extends Fragment {
         while (iterator.hasNext()) {
             TableShopListAuthor t = iterator.next();
             if(t!=null &&  (!t.is_inbox_shoplist) && (t.is_blank)) {
-                Log.d("tables", t.author);
                 tableShopListAuthors.add(t);
             }
 
@@ -121,7 +120,6 @@ public class BlanksFragment extends Fragment {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Log.d("dada","remove item in " + tableShopListAuthors.get(position).title + " ShopList: { name: " + tableShopListAuthors.get(position).author + "}" );
 
 
             List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class, "list_title = ?", tableShopListAuthors.get(position).title);
@@ -140,5 +138,9 @@ public class BlanksFragment extends Fragment {
         }
     };
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        prepareShopListsList();
+    }
 }

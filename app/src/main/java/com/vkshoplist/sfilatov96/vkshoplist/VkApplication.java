@@ -37,7 +37,6 @@ public class VkApplication extends SugarApp {
         super.onCreate();
         vkAccessTokenTracker.startTracking();
         VKSdk.initialize(this);
-        Log.d(TAG, "Завелось");
         SugarContext.init(this);
         FlurryAgent.init(this, "KXDYVPNBW8F4VFQB96X9");
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="values">
+        <item>kg</item>
+        <item>g</item>
+        <item>pack</item>
+        <item>package</item>
+        <item>packet</item>
+        <item>bottle</item>
+        <item>piece</item>
+    </string-array>
+</resources>

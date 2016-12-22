@@ -136,8 +136,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onSaveInstanceState(Bundle outState) {
             super.onSaveInstanceState(outState);
-            mSearchString = mSearchView.getQuery().toString();
-            outState.putString(SEARCH_KEY, mSearchString);
+
             outState.putSerializable("CURRENT_FRAGMENT", currentFragment);
         }
 
@@ -155,16 +154,14 @@ public class MainActivity extends AppCompatActivity
         }
 
         private void showFragment(Fragments fragments) {
-            if (VKSdk.isLoggedIn() || fragments == Fragments.LoginFragment || fragments == Fragments.AboutUsFragment) {
+            if (VKSdk.isLoggedIn() || fragments == Fragments.LoginFragment) {
                 if (friendsFragment.isVisible()) {
                     getSupportFragmentManager().beginTransaction()
-                            .remove(friendsFragment).
-                            addToBackStack(null).commitAllowingStateLoss();
+                            .remove(friendsFragment).addToBackStack(null).commitAllowingStateLoss();
                 }
                 if (loginFragment.isVisible()) {
                     getSupportFragmentManager().beginTransaction()
-                            .remove(loginFragment)
-                            .addToBackStack(null).commitAllowingStateLoss();
+                            .remove(loginFragment).addToBackStack(null).commitAllowingStateLoss();
                 }
                 if (inboxListsFragment.isVisible()) {
                     getSupportFragmentManager().beginTransaction()
@@ -219,7 +216,6 @@ public class MainActivity extends AppCompatActivity
                                 .replace(R.id.about_us_fragment, aboutUsFragment)
                                 .commitAllowingStateLoss();
                     default:
-                        Log.d("nothing_fragments", "nothing_fragments");
                         break;
 
                 }
@@ -247,42 +243,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
-            getMenuInflater().inflate(R.menu.main, menu);
-
-            MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-            SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-
-
-            //focus the SearchView
-            if (mSearchString != null && !mSearchString.isEmpty()) {
-
-                searchMenuItem.expandActionView();
-                mSearchView.setQuery(mSearchString, true);
-                mSearchView.setIconified(false);
-                mSearchView.requestFocus();
-
-
-            }
-
-            mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    friendsFragment.adapter.filter(query);
-
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    friendsFragment.adapter.filter(newText);
-                    return true;
-                }
-            });
-
 
 
             return super.onCreateOptionsMenu(menu);
@@ -422,4 +382,6 @@ public class MainActivity extends AppCompatActivity
             super.onPause();
             unregisterReceiver(broadcastReceiver);
         }
+
+
 }

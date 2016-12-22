@@ -23,6 +23,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="16dp"
+                android:scaleType="centerCrop"
                 />
             <TextView
                 android:layout_width="wrap_content"

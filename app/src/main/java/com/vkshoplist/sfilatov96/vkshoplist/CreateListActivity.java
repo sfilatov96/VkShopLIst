@@ -40,6 +40,7 @@ public class CreateListActivity extends AppCompatActivity {
     private ShopListItemRecyclerViewAdapter adapter;
     private String shopListTitle;
     String userName;
+    String userAvater;
 
 
     @Override
@@ -148,7 +149,7 @@ public class CreateListActivity extends AppCompatActivity {
                 TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(userName, ShopList.get(0).listTitle, false, is_blank, userId);
                 tableShopListAuthor.save();
             } else {
-                is_exist.get(0).is_blank = false;
+                is_exist.get(0).is_blank = is_blank;
                 is_exist.get(0).save();
             }
             return true;
@@ -162,18 +163,40 @@ public class CreateListActivity extends AppCompatActivity {
 
 
     public void getUserFromMainActivity(Intent intent){
+
         userId = intent.getStringExtra("id");
-        userName = intent.getStringExtra("name");
-        String userAvatar = intent.getStringExtra("avatar");
-        ImageView toolbarPhoto = (ImageView) findViewById(R.id.friends_avatar);
-        Picasso.with(this)
-                .load(userAvatar)
-                .transform(new CircularTransformation(80))
-                .into(toolbarPhoto);
+        VkHelper vkHelper = new VkHelper(this);
+        vkHelper.getProfileById(userId);
+        vkHelper.setListener(new VkHelper.Listener() {
+            @Override
+            public void onAppearFriends(ArrayList<Person> persons) {
+
+            }
+
+            @Override
+            public void onAppearUserProfile(JSONObject jsonObject) {
+
+                try {
+                    userName = jsonObject.getString("first_name")+' '+jsonObject.getString("last_name");
+                    userAvater = jsonObject.getString("photo_200");
+                    ImageView toolbarPhoto = (ImageView) findViewById(R.id.friends_avatar);
+                    Picasso.with(CreateListActivity.this)
+                            .load(userAvater)
+                            .transform(new CircularTransformation(80))
+                            .into(toolbarPhoto);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
         if(intent.getStringExtra("shopListTitle") != null) {
             shopListTitle = intent.getStringExtra("shopListTitle");
-            Log.d("shoplisttitle",shopListTitle);
-            getCurrentShopList();
+            //getCurrentShopList();
         }
 
     }
@@ -238,7 +261,6 @@ public class CreateListActivity extends AppCompatActivity {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Log.d("dada","remove item in " + ShopList.get(position).listTitle + " ShopList: { name: " + ShopList.get(position).name + "}" );
 
 
             List<TableShopListClass> item = TableShopListClass.find(TableShopListClass.class, "name = ? and list_title = ?", ShopList.get(position).name, ShopList.get(position).listTitle);

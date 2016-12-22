@@ -43,7 +43,6 @@ public class TitleShopListDialog extends DialogFragment {
         AlertDialog dialog = (AlertDialog) getDialog();
         if (dialog != null) {
             Button positive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-            //напрямую переопределяем слушателя для кнопки "Отмена" для предотвращения закрытия диалога
             positive.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
