@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/release/menu/activity_main_drawer.xml",
+        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/menu/activity_main_drawer.xml"
+    },
+    {
+        "merged": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/build/intermediates/res/merged/release/menu/main.xml",
+        "source": "/home/sfilatov96/AndroidStudioProjects/VkShopList/app/src/main/res/menu/main.xml"
+    }
+]
