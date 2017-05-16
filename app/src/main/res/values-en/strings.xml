@@ -58,7 +58,10 @@
         <string name="sender">Sender: </string>
         <string name="receiver">Receiver: </string>
         <string name="completed">Completed</string>
-    <string name="about_us_text">Application was developed by technopark@Mail.ru students Stepan Filatov and Ksenia Snacheva </string>
+        <string name="about_us_text">Application was developed by technopark@Mail.ru students Stepan Filatov and Ksenia Snacheva </string>
+        <string name="secret_word">Enter secret word</string>
+        <string name="create_private_shoplist">Create private shoplist</string>
+        <string name="invalid_secret_key">Invalid secret key</string>
 
 
 </resources>

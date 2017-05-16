@@ -2,6 +2,7 @@ package com.vkshoplist.sfilatov96.vkshoplist;
 
 
 
+import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +37,7 @@ public class ExecuteListActivity extends AppCompatActivity {
     VkHelper vkHelper;
     String user_id;
     boolean is_inbox;
+    boolean is_secret;
     boolean is_performed;
 
 
@@ -58,62 +60,12 @@ public class ExecuteListActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.listTitle)).setText(shopListTitle);
 
         fillShopListFromDataBase();
-
-        itemTouchHelper = new ItemTouchHelper(simpleCallbackItemTouchHelper);
-
-        recyclerView = (RecyclerView) findViewById(R.id.shop_list_rv);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(llm);
-
-
-        adapter = new ShopListItemRecyclerViewAdapter(this, ShopList);
-        recyclerView.setAdapter(adapter);
-        if(is_inbox) {
-            itemTouchHelper.attachToRecyclerView(recyclerView);
-        }
-        if(is_inbox) {
-            ImageButton sendButton = (ImageButton) findViewById(R.id.btn_send);
-            Picasso.with(this).load(R.mipmap.ic_done_white_24dp).into(sendButton);
-
-
-            sendButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (is_performed) {
-                        Toast.makeText(ExecuteListActivity.this, R.string.shoplist_allready_performed, Toast.LENGTH_LONG).show();
-                    } else {
-                        sendCompletion();
-                        finish();
-
-                    }
-                }
-            });
+        if (is_secret){
+            showSecretKeyDialog();
         } else {
-            ImageButton sendButton = (ImageButton) findViewById(R.id.btn_send);
-            sendButton.setAlpha(0);
-            sendButton.setClickable(false);
+            continueCreating();
         }
 
-        vkHelper.getProfileById(user_id);
-        vkHelper.setListener(new VkHelper.Listener() {
-            @Override
-            public void onAppearFriends(ArrayList<Person> persons) {
-
-            }
-
-            @Override
-            public void onAppearUserProfile(JSONObject jsonObject) {
-                ImageView toolbarPhoto = (ImageView) findViewById(R.id.friends_avatar);
-                try {
-                    Picasso.with(ExecuteListActivity.this)
-                            .load(jsonObject.getString("photo_200"))
-                            .transform(new CircularTransformation(80))
-                            .into(toolbarPhoto);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
 
     }
@@ -132,6 +84,7 @@ public class ExecuteListActivity extends AppCompatActivity {
             is_performed = list.get(0).is_performed;
 
             is_inbox = list.get(0).is_inbox_shoplist;
+            is_secret = list.get(0).is_secret;
         }
 
     }
@@ -206,4 +159,77 @@ public class ExecuteListActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
     };
+
+    public void showSecretKeyDialog() {
+        DialogFragment newFragment = new SecretKeyDialog();
+        newFragment.show(getFragmentManager(), "secret");
+        newFragment.setCancelable(false);
+        newFragment.setShowsDialog(true);
+    }
+
+    public void continueCreating(){
+        itemTouchHelper = new ItemTouchHelper(simpleCallbackItemTouchHelper);
+
+        recyclerView = (RecyclerView) findViewById(R.id.shop_list_rv);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(llm);
+
+
+        adapter = new ShopListItemRecyclerViewAdapter(this, ShopList);
+        recyclerView.setAdapter(adapter);
+        if(is_inbox) {
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        }
+        if(is_inbox) {
+            ImageButton sendButton = (ImageButton) findViewById(R.id.btn_send);
+            Picasso.with(this).load(R.mipmap.ic_done_white_24dp).into(sendButton);
+
+
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (is_performed) {
+                        Toast.makeText(ExecuteListActivity.this, R.string.shoplist_allready_performed, Toast.LENGTH_LONG).show();
+                    } else {
+                        sendCompletion();
+                        finish();
+
+                    }
+                }
+            });
+        } else {
+            ImageButton sendButton = (ImageButton) findViewById(R.id.btn_send);
+            sendButton.setAlpha(0);
+            sendButton.setClickable(false);
+        }
+
+        vkHelper.getProfileById(user_id);
+        vkHelper.setListener(new VkHelper.Listener() {
+            @Override
+            public void onAppearFriends(ArrayList<Person> persons) {
+
+            }
+
+            @Override
+            public void onAppearUserProfile(JSONObject jsonObject) {
+                ImageView toolbarPhoto = (ImageView) findViewById(R.id.friends_avatar);
+                try {
+                    Picasso.with(ExecuteListActivity.this)
+                            .load(jsonObject.getString("photo_200"))
+                            .transform(new CircularTransformation(80))
+                            .into(toolbarPhoto);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    public void emptyFields() {
+        Toast.makeText(this, R.string.fields_empty, Toast.LENGTH_LONG).show();
+    }
+    public void invalidSecretKey() {
+        Toast.makeText(this, R.string.invalid_secret_key, Toast.LENGTH_LONG).show();
+    }
 }

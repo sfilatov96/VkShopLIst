@@ -57,5 +57,8 @@
     <string name="completed">Завершено</string>
     <string name="about_us_text">Приложение разработали студенты технопарка@Mail.ru Степан Филатов и Ксения Сначёва </string>
     <string name="not_logged_in">Вы не авторизованы!</string>
+    <string name="secret_word">Введите секретное слово</string>
+    <string name="create_private_shoplist">Создать приватный список</string>
+    <string name="invalid_secret_key">Неверный секретный ключ</string>
 
 </resources>

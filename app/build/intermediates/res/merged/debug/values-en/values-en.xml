@@ -22,6 +22,7 @@
     <string name="blank">Empty list</string>
     <string name="cancel">Cancel</string>
     <string name="completed">Completed</string>
+    <string name="create_private_shoplist">Create private shoplist</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -32,6 +33,7 @@
     <string name="how_many_to_buy">How many?</string>
     <string name="inbox_lists">Inbox shoplists</string>
     <string name="internet_access_error">Internet connection error, please, try send it again</string>
+    <string name="invalid_secret_key">Invalid secret key</string>
     <string name="is_outbox_shoplist">This Shoplist is outgoing </string>
     <string name="list_empty">ShopList is empty, nothing to send!</string>
     <string name="login_through_vk">Login through Vk</string>
@@ -52,6 +54,7 @@
     <string name="receiver">Receiver: </string>
     <string name="samples">Drafts</string>
     <string name="saved_as_blank">Saved like drafts!</string>
+    <string name="secret_word">Enter secret word</string>
     <string name="send_button">Send</string>
     <string name="send_success">Shoplist sended success!</string>
     <string name="sender">Sender: </string>

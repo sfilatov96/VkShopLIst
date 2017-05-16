@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -54,8 +55,11 @@ public class MainActivity extends AppCompatActivity
     BlanksFragment blanksFragment = new BlanksFragment();
     AboutUsFragment aboutUsFragment = new AboutUsFragment();
 
+    SharedPreferences secretKey;
+
     private final String NO_INTERNET_ACCESS = "Not connected to Internet";
     private final String APP_PREFERENCES = "LONG_POLL_SERVER";
+    final String APP_PREFERENCES_KEY = "SECRET_WORD";
 
     enum Fragments implements Serializable{
         LoginFragment,FriendsFragment,InboxFragment,OutboxFragment,BlanksFragment,Nothing,AboutUsFragment
@@ -276,6 +280,7 @@ public class MainActivity extends AppCompatActivity
                 showFragment(Fragments.AboutUsFragment);
             } else if (id == R.id.nav_logout) {
                 if (VKSdk.isLoggedIn()) {
+                    resetSecretKey();
                     VKSdk.logout();
                     offService();
                     showFragment(Fragments.LoginFragment);
@@ -378,6 +383,13 @@ public class MainActivity extends AppCompatActivity
             super.onPause();
             unregisterReceiver(broadcastReceiver);
         }
+
+        private void resetSecretKey(){
+            secretKey = getSharedPreferences(APP_PREFERENCES_KEY,0);
+            Log.d("logout",secretKey.getString("KEY",""));
+            secretKey.edit().remove("KEY").apply();
+        }
+
 
 
 }

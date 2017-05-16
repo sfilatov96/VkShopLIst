@@ -261,7 +261,7 @@ public class VkMessangerService extends Service {
                     }
 
 
-                    TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname + ' ' + lastname, jsobj.getString("list_title"), true, false, user_id);
+                    TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(firstname + ' ' + lastname, jsobj.getString("list_title"), true, false, user_id,jsonObject.getBoolean("is_private"));
                     tableShopListAuthor.save();
 
                     runNotification(firstname, lastname, false, jsobj.getString("list_title"));

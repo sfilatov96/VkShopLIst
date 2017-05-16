@@ -39,6 +39,7 @@ public class CreateListActivity extends AppCompatActivity {
     public ArrayList<ShopListItem> ShopList;
     private ShopListItemRecyclerViewAdapter adapter;
     private String shopListTitle;
+    private boolean is_private;
     String userName;
     String userAvater;
 
@@ -146,7 +147,7 @@ public class CreateListActivity extends AppCompatActivity {
             }
             List<TableShopListAuthor> is_exist = TableShopListAuthor.find(TableShopListAuthor.class,"title = ?",shopListTitle);
             if(is_exist.isEmpty()) {
-                TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(userName, ShopList.get(0).listTitle, false, is_blank, userId);
+                TableShopListAuthor tableShopListAuthor = new TableShopListAuthor(userName, ShopList.get(0).listTitle, false, is_blank, userId,is_private);
                 tableShopListAuthor.save();
             } else {
                 is_exist.get(0).is_blank = is_blank;
@@ -220,8 +221,9 @@ public class CreateListActivity extends AppCompatActivity {
         newFragment.setShowsDialog(true);
     }
 
-    public void GetShopListTitle(String title) {
+    public void GetShopListTitle(String title,Boolean checkbox) {
         shopListTitle = title+" - ("+getCurrentDate()+")";
+        is_private=checkbox;
         ((TextView)findViewById(R.id.listTitle)).setText(shopListTitle);
         getCurrentShopList();
     }
@@ -296,6 +298,7 @@ public class CreateListActivity extends AppCompatActivity {
             JSONObject prepareJson = new JSONObject();
             try {
                 prepareJson.put(VK_MESSAGE_IDENTIFIER,jsonlist);
+                prepareJson.put("is_private",is_private);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

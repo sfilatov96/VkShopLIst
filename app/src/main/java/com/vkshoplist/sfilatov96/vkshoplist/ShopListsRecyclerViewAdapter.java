@@ -66,7 +66,11 @@ public class ShopListsRecyclerViewAdapter extends RecyclerView.Adapter<ShopLists
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
         String sender_or_receiver;
         String[] date_and_title = tableShopListAuthors.get(i).title.split(" - ");
-        personViewHolder.list_title.setText(date_and_title[0]);
+        if (tableShopListAuthors.get(i).is_secret) {
+            personViewHolder.list_title.setText(date_and_title[0]+"(приватный)");
+        } else {
+            personViewHolder.list_title.setText(date_and_title[0]);
+        }
         personViewHolder.list_date.setText(date_and_title[1]);
         if(tableShopListAuthors.get(i).is_performed){
             personViewHolder.cv.setAlpha(((float) 0.35));

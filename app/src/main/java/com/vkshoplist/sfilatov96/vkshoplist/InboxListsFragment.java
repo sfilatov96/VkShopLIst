@@ -70,11 +70,7 @@ public class InboxListsFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         TableShopListAuthor shopListAuthor = adapter.getListByPosition(position);
                         if(!shopListAuthor.is_performed) {
-                            Intent intent = new Intent(getActivity(), ExecuteListActivity.class);
-                            intent.putExtra("SHOPLIST_TITLE",shopListAuthor.title);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-
+                            redirectToShopList(shopListAuthor);
                         } else {
                             Toast.makeText(getActivity(), R.string.shoplist_allready_performed, Toast.LENGTH_SHORT).show();
                         }
@@ -138,7 +134,15 @@ public class InboxListsFragment extends Fragment {
 
             adapter.notifyDataSetChanged();
         }
+
     };
+
+    private void redirectToShopList(TableShopListAuthor shopListAuthor){
+        Intent intent = new Intent(getActivity(), ExecuteListActivity.class);
+        intent.putExtra("SHOPLIST_TITLE",shopListAuthor.title);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 
 
 }

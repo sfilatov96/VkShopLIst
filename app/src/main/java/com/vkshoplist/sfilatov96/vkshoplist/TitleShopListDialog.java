@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 /**
@@ -47,12 +48,18 @@ public class TitleShopListDialog extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     EditText title_input = (EditText) view.findViewById(R.id.title_input);
+                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.isPrivatecheckBox);
                     if( title_input.getText().toString().isEmpty()){
                         ((CreateListActivity)getActivity()).emptyFields();
 
                     } else {
-                        ((CreateListActivity) getActivity()).GetShopListTitle(title_input.getText().toString());
-                        TitleShopListDialog.this.getDialog().dismiss();
+                        if (checkBox.isChecked()) {
+                            ((CreateListActivity) getActivity()).GetShopListTitle(title_input.getText().toString(), true);
+                            TitleShopListDialog.this.getDialog().dismiss();
+                        } else {
+                            ((CreateListActivity) getActivity()).GetShopListTitle(title_input.getText().toString(), false);
+                            TitleShopListDialog.this.getDialog().dismiss();
+                        }
                     }
                 }
             });

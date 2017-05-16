@@ -438,6 +438,7 @@
     <string name="common_signin_button_text">Sign in</string>
     <string name="common_signin_button_text_long">Sign in with Google</string>
     <string name="completed">Завершено</string>
+    <string name="create_private_shoplist">Создать приватный список</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -453,6 +454,7 @@
     <string name="how_many_to_buy">Сколько купить?</string>
     <string name="inbox_lists">Входящие Списки</string>
     <string name="internet_access_error">Ошибка подключения к интернет, пожалуйста, попробуйте ещё раз отправить</string>
+    <string name="invalid_secret_key">Неверный секретный ключ</string>
     <string name="is_outbox_shoplist">Этот список является исходящим</string>
     <string name="list_empty">Список пуст, отправлять нечего!</string>
     <string name="login_through_vk">Войти через Vk</string>
@@ -474,6 +476,7 @@
     <string name="samples">Черновики</string>
     <string name="saved_as_blank">Сохранено в черновики!</string>
     <string name="search_menu_title">Search</string>
+    <string name="secret_word">Введите секретное слово</string>
     <string name="send_button">Отправить</string>
     <string name="send_success">Список успешно отправлен!</string>
     <string name="sender">Отправитель: </string>
